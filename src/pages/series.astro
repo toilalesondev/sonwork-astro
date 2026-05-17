@@ -6,9 +6,9 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const seriesMap: Record<string, {name:string, emoji:string, color:string, textColor:string, desc:string, accentClass:string}> = {
-  'life-book':   { name:'Life Book',   emoji:'📖', color:'#1a3a6b', textColor:'#fff', desc:'Year-by-year entries. One life, written down. Compiled into a book at 50.', accentClass:'lb' },
-  'experiences': { name:'Experiences', emoji:'🛤️', color:'#7c3a00', textColor:'#ffd6a5', desc:'Things lived through. The good, the hard, the ones that shifted something.', accentClass:'ex' },
-  'human':       { name:'Human',       emoji:'🧠', color:'#4a1a3a', textColor:'#f9b8d4', desc:'On people, psychology, behavior — what it means to be one of us.', accentClass:'hu' },
+  'life-book':   { name:'Life Book',   emoji:'§',  color:'#1a3a6b', textColor:'#fff', desc:'Year-by-year entries written as they happen, compiled into a physical book at 50. Not memoir — evidence.', accentClass:'lb' },
+  'experiences': { name:'Experiences', emoji:'↳', color:'#7c3a00', textColor:'#ffd6a5', desc:'Not advice. Not lessons. Accounts of specific situations that were real enough to leave a mark.', accentClass:'ex' },
+  'human':       { name:'Human',       emoji:'◎', color:'#4a1a3a', textColor:'#f9b8d4', desc:'How people think, decide, break, and convince themselves they didn\'t. More useful than most frameworks.', accentClass:'hu' },
 };
 ---
 <Base title="Series — Sơn Lê">

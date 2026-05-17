@@ -6,9 +6,9 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const seriesMap: Record<string, {name:string, emoji:string, color:string, textColor:string}> = {
-  'life-book':    { name:'Life Book',    emoji:'📖', color:'#1a3a6b', textColor:'#fff' },
-  'experiences':  { name:'Experiences',  emoji:'🛤️', color:'#7c3a00', textColor:'#ffd6a5' },
-  'human':        { name:'Human',        emoji:'🧠', color:'#4a1a3a', textColor:'#f9b8d4' },
+  'life-book':    { name:'Life Book',    emoji:'§',  color:'#1a3a6b', textColor:'#fff' },
+  'experiences':  { name:'Experiences',  emoji:'↳', color:'#7c3a00', textColor:'#ffd6a5' },
+  'human':        { name:'Human',        emoji:'◎', color:'#4a1a3a', textColor:'#f9b8d4' },
 };
 
 const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
@@ -36,6 +36,7 @@ const seriesCounts = Object.fromEntries(
       <section class="hero">
         <img src="/son.jpg" alt="Sơn Lê" class="hero-photo"/>
         <div class="hero-text">
+          <div class="hero-hook">I've sat on both sides of the table. Neither was comfortable.</div>
           <h1 class="hero-name">Sơn Lê</h1>
           <div class="hero-roles">
             <span>VC</span>
@@ -48,19 +49,18 @@ const seriesCounts = Object.fromEntries(
             Co-founder, <a href="https://perfeat.org" target="_blank" rel="noopener">Perfeat.org ↗</a>
           </div>
           <p class="hero-bio">
-            I've sat on every side of the table — backing founders, running ops, now building from scratch.
-            This is where I write about what I see, what I live through, and what it means to be human in all of it.
+            Spent years writing checks, then spent years cashing out reputation. Now I build things in Saigon and write about what I notice.
           </p>
           <div class="hero-ctas">
-            <a href="/series" class="btn-primary">Read my writing</a>
-            <a href="/contact" class="btn-outline">Get in touch</a>
+            <a href="/series" class="btn-primary">Read the work</a>
+            <a href="/contact" class="btn-outline">What is this place</a>
           </div>
         </div>
       </section>
 
       <!-- FEED HEADER -->
       <div class="feed-header">
-        <span class="feed-label">Recent writing</span>
+        <span class="feed-label">RECENT</span>
         <!-- TABS -->
         <div class="tabs" id="tabs">
           <button class="tab active" data-series="all">All</button>
@@ -111,7 +111,7 @@ const seriesCounts = Object.fromEntries(
     <!-- SIDEBAR -->
     <aside class="dash-sidebar">
       <div class="sidebar-section">
-        <div class="sidebar-title">Series</div>
+        <div class="sidebar-title">SERIES</div>
         {Object.entries(seriesMap).map(([key, s]) => (
           <a href="/series" class="sidebar-series-row">
             <span class="ssrow-icon" style={`background:${s.color}22`}>{s.emoji}</span>
@@ -122,7 +122,7 @@ const seriesCounts = Object.fromEntries(
       </div>
 
       <div class="sidebar-section">
-        <div class="sidebar-title">Tags</div>
+        <div class="sidebar-title">TOPICS</div>
         <div class="tag-cloud" id="tagCloud">
           {allTags.map(tag => (
             <button class="tag-pill sidebar-tag" data-tag={tag} onclick={`filterTag(event,'${tag}')`}>{tag}</button>
@@ -131,7 +131,7 @@ const seriesCounts = Object.fromEntries(
       </div>
 
       <div class="sidebar-about">
-        Writing about life, building, and what it means to be human.
+        Sơn Lê — VC, then operator, now builder. Writing to stay honest.
       </div>
     </aside>
   </div>
