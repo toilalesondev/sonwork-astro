@@ -5,102 +5,110 @@ import { getCollection } from 'astro:content';
 const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const seriesMap: Record<string, {name:string, emoji:string, color:string, textColor:string}> = {
-  'life-book':    { name:'Life Book',    emoji:'§',  color:'#1a3a6b', textColor:'#fff' },
-  'experiences':  { name:'Experiences',  emoji:'↳', color:'#7c3a00', textColor:'#ffd6a5' },
-  'human':        { name:'Human',        emoji:'◎', color:'#4a1a3a', textColor:'#f9b8d4' },
+const seriesMap: Record<string, {name:string, marker:string, color:string, badgeClass:string, desc:string}> = {
+  'life-book':   { name:'Life Book',   marker:'§',  color:'#1a3a6b', badgeClass:'badge-life', desc:'Year-by-year entries written as they happen, compiled into a physical book at 50. Not memoir — evidence.' },
+  'experiences': { name:'Experiences', marker:'↳', color:'#7c3a00', badgeClass:'badge-exp',  desc:'Not advice. Not lessons. Accounts of specific situations that were real enough to leave a mark.' },
+  'human':       { name:'Human',       marker:'◎', color:'#4a1a3a', badgeClass:'badge-human',desc:'How people think, decide, break, and convince themselves they didn\'t. More useful than most frameworks.' },
 };
 
 const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
 const seriesCounts = Object.fromEntries(
   Object.keys(seriesMap).map(s => [s, allPosts.filter(p => p.data.series === s).length])
 );
+const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime), 0);
 ---
 <Base>
   <!-- NAV -->
-  <nav id="nav">
+  <nav class="nav">
     <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
     <div class="nav-links">
       <a href="/" class="nav-link active">Dashboard</a>
       <a href="/series" class="nav-link">Series</a>
       <a href="/contact" class="nav-link">Contact</a>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☽</button>
   </nav>
 
-  <!-- DASHBOARD -->
+  <!-- DASHBOARD WRAP -->
   <div class="dashboard-wrap">
     <main class="dash-main">
 
       <!-- HERO -->
       <section class="hero">
-        <img src="/son.jpg" alt="Sơn Lê" class="hero-photo"/>
-        <div class="hero-text">
-          <div class="hero-hook">I've sat on both sides of the table. Neither was comfortable.</div>
+        <div class="hero-left">
+          <div class="hero-prompt"><span class="mono text-3">./introduction</span></div>
+          <div class="hero-avatar">SL</div>
           <h1 class="hero-name">Sơn Lê</h1>
-          <div class="hero-roles">
-            <span>VC</span>
-            <span class="role-arrow">→</span>
-            <span>Operator</span>
-            <span class="role-arrow">→</span>
-            <span>Builder</span>
+          <div class="hero-hook">
+            I've sat on both sides of the table. Neither was comfortable.<span class="cursor">▊</span>
           </div>
-          <div class="hero-company">
-            Co-founder, <a href="https://perfeat.org" target="_blank" rel="noopener">Perfeat.org ↗</a>
+          <div class="hero-roles">
+            <span class="role-item">VC</span>
+            <span class="role-sep mono">→</span>
+            <span class="role-item">Operator</span>
+            <span class="role-sep mono">→</span>
+            <span class="role-item active">Builder</span>
+          </div>
+          <div class="hero-company mono text-3">
+            Co-founder, <a href="https://perfeat.org" target="_blank" rel="noopener" class="amber-link">Perfeat.org ↗</a>
           </div>
           <p class="hero-bio">
             Spent years writing checks, then spent years cashing out reputation. Now I build things in Saigon and write about what I notice.
           </p>
           <div class="hero-ctas">
             <a href="/series" class="btn-primary">Read the work</a>
-            <a href="/contact" class="btn-outline">What is this place</a>
+            <a href="/contact" class="btn-ghost">What is this place</a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="stats-card">
+            <div class="stats-label mono">STATS</div>
+            <div class="stat-row"><span class="mono text-3">posts_written</span><span class="mono amber">{allPosts.length}</span></div>
+            <div class="stat-row"><span class="mono text-3">series</span><span class="mono amber">3</span></div>
+            <div class="stat-row"><span class="mono text-3">years_logged</span><span class="mono amber">1</span></div>
+            <div class="stat-row"><span class="mono text-3">est_read_time</span><span class="mono amber">{totalReadTime} min</span></div>
           </div>
         </div>
       </section>
 
-      <!-- FEED HEADER -->
-      <div class="feed-header">
-        <span class="feed-label">RECENT</span>
-        <!-- TABS -->
-        <div class="tabs" id="tabs">
-          <button class="tab active" data-series="all">All</button>
-          {Object.entries(seriesMap).map(([key, s]) => (
-            <button class="tab" data-series={key}>{s.name}</button>
-          ))}
-        </div>
+      <!-- TABS -->
+      <div class="tab-strip" id="tabs">
+        <button class="tab active" data-series="all">All</button>
+        {Object.entries(seriesMap).map(([key, s]) => (
+          <button class="tab" data-series={key}>
+            <span class="mono">{s.marker}</span> {s.name}
+          </button>
+        ))}
       </div>
 
-      <!-- ACTIVE TAG INDICATOR -->
+      <!-- ACTIVE TAG BAR -->
       <div id="activeTagBar" class="active-tag-bar" style="display:none">
-        Filtering by: <span id="activeTagLabel"></span>
-        <button onclick="clearTag()">× clear</button>
+        <span class="mono text-3">filtering:</span>
+        <span class="mono amber" id="activeTagLabel"></span>
+        <button class="clear-tag" id="clearTagBtn">× clear</button>
       </div>
 
       <!-- POST FEED -->
       <div class="post-feed" id="postFeed">
-        {allPosts.map((post, i) => {
+        {allPosts.map(post => {
           const s = seriesMap[post.data.series];
           return (
             <a href={`/posts/${post.id}`}
-               class="post-card"
+               class="post-row"
                data-series={post.data.series}
                data-tags={post.data.tags.join(',')}>
-              <span class="post-num">{String(i+1).padStart(2,'0')}</span>
-              <div class="post-body-text">
-                <div class="post-title">{post.data.title}</div>
-                <div class="post-excerpt">{post.data.description}</div>
-                <div class="post-meta-row">
-                  <span class="series-badge" style={`background:${s.color};color:${s.textColor}`}>
-                    {s.emoji} {s.name}
-                  </span>
+              <span class={`post-marker mono ${s.badgeClass}`}>{s.marker}</span>
+              <div class="post-middle">
+                <span class="post-title">{post.data.title}</span>
+                <div class="post-tags">
                   {post.data.tags.map(tag => (
-                    <button class="tag-pill" data-tag={tag} onclick={`filterTag(event,'${tag}')`}>{tag}</button>
+                    <button class="tag-chip mono" data-tag={tag}
+                      onclick={`event.preventDefault();event.stopPropagation();filterTag('${tag}')`}>[{tag}]</button>
                   ))}
-                  <span class="post-date">{post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
-                  <span class="post-read">{post.data.readTime} read</span>
                 </div>
               </div>
-              <div class="post-thumb">{post.data.emoji}</div>
+              <span class="post-date mono text-3">
+                {post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+              </span>
             </a>
           );
         })}
@@ -110,48 +118,32 @@ const seriesCounts = Object.fromEntries(
 
     <!-- SIDEBAR -->
     <aside class="dash-sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-title">SERIES</div>
+      <div class="sidebar-block">
+        <div class="sidebar-hd mono">SERIES</div>
         {Object.entries(seriesMap).map(([key, s]) => (
-          <a href="/series" class="sidebar-series-row">
-            <span class="ssrow-icon" style={`background:${s.color}22`}>{s.emoji}</span>
-            <span class="ssrow-name">{s.name}</span>
-            <span class="ssrow-count">{seriesCounts[key]}</span>
+          <a href="/series" class="sb-series-row">
+            <span class="mono amber">{s.marker}</span>
+            <span class="sb-name">{s.name}</span>
+            <span class="mono text-3">{seriesCounts[key]}</span>
           </a>
         ))}
       </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-title">TOPICS</div>
-        <div class="tag-cloud" id="tagCloud">
+      <div class="sidebar-block">
+        <div class="sidebar-hd mono">TOPICS</div>
+        <div class="tag-cloud">
           {allTags.map(tag => (
-            <button class="tag-pill sidebar-tag" data-tag={tag} onclick={`filterTag(event,'${tag}')`}>{tag}</button>
+            <button class="tag-chip mono sidebar-tag" data-tag={tag}
+              onclick={`filterTag('${tag}')`}>[{tag}]</button>
           ))}
         </div>
       </div>
-
-      <div class="sidebar-about">
+      <div class="sidebar-about mono text-3">
         Sơn Lê — VC, then operator, now builder. Writing to stay honest.
       </div>
     </aside>
   </div>
 
   <script>
-    // Theme — dark default
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-      document.documentElement.setAttribute('data-theme','light');
-      document.getElementById('themeToggle').textContent = '☀';
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-    }
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
-      localStorage.setItem('theme', isLight ? 'dark' : 'light');
-      document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
-    });
-
     // Tab filtering
     document.querySelectorAll('.tab').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -159,42 +151,36 @@ const seriesCounts = Object.fromEntries(
         btn.classList.add('active');
         const series = btn.dataset.series;
         clearTagSilent();
-        document.querySelectorAll('.post-card').forEach(card => {
-          card.style.display = (series === 'all' || card.dataset.series === series) ? 'flex' : 'none';
+        document.querySelectorAll('.post-row').forEach(row => {
+          row.style.display = (series === 'all' || row.dataset.series === series) ? 'flex' : 'none';
         });
       });
     });
 
     // Tag filtering
     let activeTag = null;
-    window.filterTag = function(e, tag) {
-      e.preventDefault(); e.stopPropagation();
+    window.filterTag = function(tag) {
       if (activeTag === tag) { clearTag(); return; }
       activeTag = tag;
-      // reset tabs
       document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
       document.querySelector('.tab[data-series="all"]').classList.add('active');
-      // filter cards
-      document.querySelectorAll('.post-card').forEach(card => {
-        const tags = (card.dataset.tags || '').split(',');
-        card.style.display = tags.includes(tag) ? 'flex' : 'none';
+      document.querySelectorAll('.post-row').forEach(row => {
+        const tags = (row.dataset.tags || '').split(',');
+        row.style.display = tags.includes(tag) ? 'flex' : 'none';
       });
-      // highlight tag pills
-      document.querySelectorAll('.tag-pill').forEach(p => {
-        p.classList.toggle('active', p.dataset.tag === tag);
-      });
-      // show bar
+      document.querySelectorAll('.tag-chip').forEach(c => c.classList.toggle('active', c.dataset.tag === tag));
       document.getElementById('activeTagBar').style.display = 'flex';
       document.getElementById('activeTagLabel').textContent = tag;
     };
     window.clearTag = function() {
       clearTagSilent();
-      document.querySelectorAll('.post-card').forEach(c => c.style.display = 'flex');
+      document.querySelectorAll('.post-row').forEach(r => r.style.display = 'flex');
     };
     function clearTagSilent() {
       activeTag = null;
-      document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('active'));
       document.getElementById('activeTagBar').style.display = 'none';
     }
+    document.getElementById('clearTagBtn')?.addEventListener('click', clearTag);
   </script>
 </Base>

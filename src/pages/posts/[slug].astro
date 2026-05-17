@@ -10,77 +10,52 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-const seriesMap: Record<string, {name:string, emoji:string, color:string, textColor:string}> = {
-  'life-book':   { name:'Life Book',   emoji:'📖', color:'#1a3a6b', textColor:'#fff' },
-  'experiences': { name:'Experiences', emoji:'🛤️', color:'#7c3a00', textColor:'#ffd6a5' },
-  'human':       { name:'Human',       emoji:'🧠', color:'#4a1a3a', textColor:'#f9b8d4' },
+const seriesMap: Record<string, {name:string, marker:string, badgeClass:string}> = {
+  'life-book':   { name:'Life Book',   marker:'§',  badgeClass:'badge-life' },
+  'experiences': { name:'Experiences', marker:'↳', badgeClass:'badge-exp' },
+  'human':       { name:'Human',       marker:'◎', badgeClass:'badge-human' },
 };
 const s = seriesMap[post.data.series];
 ---
 <Base title={`${post.data.title} — Sơn Lê`} description={post.data.description}>
-  <nav id="nav">
+  <nav class="nav">
     <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
     <div class="nav-links">
       <a href="/" class="nav-link">Dashboard</a>
       <a href="/series" class="nav-link">Series</a>
       <a href="/contact" class="nav-link">Contact</a>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☽</button>
   </nav>
 
   <article class="post-article">
-    <a href="/series" class="back-btn">← {s.name}</a>
+    <a href="/" class="back-link mono text-3">← back</a>
+
+    <div class="post-article-meta">
+      <span class={`post-marker mono ${s.badgeClass}`}>{s.marker}</span>
+      <span class="mono text-3">{s.name}</span>
+      <span class="mono text-3">·</span>
+      <span class="mono text-3">
+        {post.data.pubDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}
+      </span>
+      <span class="mono text-3">·</span>
+      <span class="mono text-3">{post.data.readTime} read</span>
+    </div>
 
     <h1 class="post-article-title">{post.data.title}</h1>
     {post.data.description && <p class="post-article-sub">{post.data.description}</p>}
 
-    <div class="post-article-author">
-      <img src="/son.jpg" alt="Sơn Lê" class="paa-photo"/>
-      <div class="paa-info">
-        <div class="paa-name">Sơn Lê</div>
-        <div class="paa-meta">
-          {post.data.pubDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}
-          · {post.data.readTime} read
-        </div>
-      </div>
-      <span class="series-badge" style={`background:${s.color};color:${s.textColor}`}>
-        {s.emoji} {s.name}
-      </span>
-      <div class="paa-tags">
-        {post.data.tags.map(tag => <span class="tag-pill">{tag}</span>)}
-      </div>
+    <div class="post-article-tags">
+      {post.data.tags.map(tag => <span class="tag-chip mono">[{tag}]</span>)}
     </div>
 
-    <div class="post-hero">{post.data.emoji}</div>
+    <div class="post-divider"></div>
 
     <div class="post-content">
       <Content/>
     </div>
 
-    <div class="clap-row">
-      <button class="clap-btn" id="clapBtn">👏 <span id="clapCount">0</span></button>
-      <a href="/" class="btn-outline" style="font-size:13px">← Back to writing</a>
+    <div class="post-footer">
+      <a href="/" class="btn-ghost mono">← back to writing</a>
     </div>
   </article>
-
-  <script>
-    // Theme — dark default
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-      document.documentElement.setAttribute('data-theme','light');
-      document.getElementById('themeToggle').textContent = '☀';
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-    }
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
-      localStorage.setItem('theme', isLight ? 'dark' : 'light');
-      document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
-    });
-    let claps = 0;
-    document.getElementById('clapBtn').addEventListener('click', () => {
-      document.getElementById('clapCount').textContent = ++claps;
-    });
-  </script>
 </Base>

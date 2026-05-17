@@ -2,72 +2,47 @@
 import Base from '../layouts/Base.astro';
 ---
 <Base title="Contact — Sơn Lê">
-  <nav id="nav">
+  <nav class="nav">
     <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
     <div class="nav-links">
       <a href="/" class="nav-link">Dashboard</a>
       <a href="/series" class="nav-link">Series</a>
       <a href="/contact" class="nav-link active">Contact</a>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☽</button>
   </nav>
 
   <div class="contact-wrap">
+    <div class="mono text-3 page-prompt">./contact</div>
     <h1 class="contact-title">Say something worth saying.</h1>
     <p class="contact-sub">No pitches. No collab requests with decks attached. If you have something real to say, the bar is low.</p>
 
     <div class="contact-links">
       <a href="mailto:son@perfeat.org" class="contact-row">
-        <span class="cr-icon">✉️</span>
+        <span class="mono amber cr-marker">&gt;</span>
         <div class="cr-info">
-          <div class="cr-label">Email</div>
-          <div class="cr-val">son@perfeat.org</div>
+          <div class="cr-label">son@perfeat.org</div>
+          <div class="mono text-3 cr-sub">email</div>
         </div>
-        <span class="cr-arrow">→</span>
+        <span class="mono text-3">↗</span>
       </a>
       <a href="https://x.com/toilaleson" target="_blank" rel="noopener" class="contact-row">
-        <span class="cr-icon">𝕏</span>
+        <span class="mono amber cr-marker">&gt;</span>
         <div class="cr-info">
-          <div class="cr-label">Twitter / X</div>
-          <div class="cr-val">@toilaleson</div>
+          <div class="cr-label">@toilaleson</div>
+          <div class="mono text-3 cr-sub">x / twitter</div>
         </div>
-        <span class="cr-arrow">→</span>
-      </a>
-      <a href="https://linkedin.com/in/toilaleson" target="_blank" rel="noopener" class="contact-row">
-        <span class="cr-icon">💼</span>
-        <div class="cr-info">
-          <div class="cr-label">LinkedIn</div>
-          <div class="cr-val">Sơn Lê</div>
-        </div>
-        <span class="cr-arrow">→</span>
+        <span class="mono text-3">↗</span>
       </a>
       <a href="https://perfeat.org" target="_blank" rel="noopener" class="contact-row">
-        <span class="cr-icon">🏗️</span>
+        <span class="mono amber cr-marker">&gt;</span>
         <div class="cr-info">
-          <div class="cr-label">Perfeat.org</div>
-          <div class="cr-val">What I'm building</div>
+          <div class="cr-label">perfeat.org</div>
+          <div class="mono text-3 cr-sub">what i'm building</div>
         </div>
-        <span class="cr-arrow">→</span>
+        <span class="mono text-3">↗</span>
       </a>
     </div>
 
-    <p class="contact-note">I reply when there's something to reply to.</p>
+    <div class="mono text-3 contact-note">// I reply when there's something to reply to.</div>
   </div>
-
-  <script>
-    // Theme — dark default
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-      document.documentElement.setAttribute('data-theme','light');
-      document.getElementById('themeToggle').textContent = '☀';
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-    }
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
-      localStorage.setItem('theme', isLight ? 'dark' : 'light');
-      document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
-    });
-  </script>
 </Base>
