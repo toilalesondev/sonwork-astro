@@ -64,15 +64,20 @@ const s = seriesMap[post.data.series];
   </article>
 
   <script>
+    // Theme — dark default
     const saved = localStorage.getItem('theme');
-    if (saved === 'light') document.documentElement.setAttribute('data-theme','light');
+    if (saved === 'light') {
+      document.documentElement.setAttribute('data-theme','light');
+      document.getElementById('themeToggle').textContent = '☀';
+    } else {
+      document.documentElement.setAttribute('data-theme','dark');
+    }
     document.getElementById('themeToggle').addEventListener('click', () => {
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
       document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
       localStorage.setItem('theme', isLight ? 'dark' : 'light');
       document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
     });
-    if (saved === 'light') document.getElementById('themeToggle').textContent = '☀';
     let claps = 0;
     document.getElementById('clapBtn').addEventListener('click', () => {
       document.getElementById('clapCount').textContent = ++claps;
