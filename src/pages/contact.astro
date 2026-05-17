@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Contact — Sơn Lê">
+  <nav id="nav">
+    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Dashboard</a>
+      <a href="/series" class="nav-link">Series</a>
+      <a href="/contact" class="nav-link active">Contact</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☽</button>
+  </nav>
+
+  <div class="contact-wrap">
+    <h1 class="contact-title">Let's talk.</h1>
+    <p class="contact-sub">Building something? Have a thought worth sharing? I read everything.</p>
+
+    <div class="contact-links">
+      <a href="mailto:son@perfeat.org" class="contact-row">
+        <span class="cr-icon">✉️</span>
+        <div class="cr-info">
+          <div class="cr-label">Email</div>
+          <div class="cr-val">son@perfeat.org</div>
+        </div>
+        <span class="cr-arrow">→</span>
+      </a>
+      <a href="https://x.com/toilaleson" target="_blank" rel="noopener" class="contact-row">
+        <span class="cr-icon">𝕏</span>
+        <div class="cr-info">
+          <div class="cr-label">Twitter / X</div>
+          <div class="cr-val">@toilaleson</div>
+        </div>
+        <span class="cr-arrow">→</span>
+      </a>
+      <a href="https://linkedin.com/in/toilaleson" target="_blank" rel="noopener" class="contact-row">
+        <span class="cr-icon">💼</span>
+        <div class="cr-info">
+          <div class="cr-label">LinkedIn</div>
+          <div class="cr-val">Sơn Lê</div>
+        </div>
+        <span class="cr-arrow">→</span>
+      </a>
+      <a href="https://perfeat.org" target="_blank" rel="noopener" class="contact-row">
+        <span class="cr-icon">🏗️</span>
+        <div class="cr-info">
+          <div class="cr-label">Perfeat.org</div>
+          <div class="cr-val">What I'm building</div>
+        </div>
+        <span class="cr-arrow">→</span>
+      </a>
+    </div>
+
+    <p class="contact-note">No pitch decks needed.</p>
+  </div>
+
+  <script>
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      localStorage.setItem('theme', isLight ? 'dark' : 'light');
+      document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
+    });
+    if (saved === 'light') document.getElementById('themeToggle').textContent = '☀';
+  </script>
+</Base>

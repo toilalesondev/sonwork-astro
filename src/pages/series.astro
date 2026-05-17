@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('posts', ({data}) => !data.draft))
+  .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const seriesMap: Record<string, {name:string, emoji:string, color:string, textColor:string, desc:string, accentClass:string}> = {
+  'life-book':   { name:'Life Book',   emoji:'📖', color:'#1a3a6b', textColor:'#fff', desc:'Year-by-year entries. One life, written down. Compiled into a book at 50.', accentClass:'lb' },
+  'experiences': { name:'Experiences', emoji:'🛤️', color:'#7c3a00', textColor:'#ffd6a5', desc:'Things lived through. The good, the hard, the ones that shifted something.', accentClass:'ex' },
+  'human':       { name:'Human',       emoji:'🧠', color:'#4a1a3a', textColor:'#f9b8d4', desc:'On people, psychology, behavior — what it means to be one of us.', accentClass:'hu' },
+};
+---
+<Base title="Series — Sơn Lê">
+  <nav id="nav">
+    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Dashboard</a>
+      <a href="/series" class="nav-link active">Series</a>
+      <a href="/contact" class="nav-link">Contact</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☽</button>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="page-header">
+      <h1 class="page-title">Series</h1>
+      <p class="page-sub">Long-form collections. Each one is a thread — posts that belong together.</p>
+    </div>
+
+    <!-- SERIES CARDS -->
+    <div class="series-grid">
+      {Object.entries(seriesMap).map(([key, s]) => {
+        const count = allPosts.filter(p => p.data.series === key).length;
+        return (
+          <div class={`series-card series-card--${s.accentClass}`} style={`--scolor:${s.color}`}>
+            <div class="sc-banner">{s.emoji}</div>
+            <div class="sc-body">
+              <div class="sc-name">{s.name}</div>
+              <div class="sc-desc">{s.desc}</div>
+              <div class="sc-meta">{count} {count === 1 ? 'post' : 'posts'}</div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- PER-SERIES POST LISTS -->
+    {Object.entries(seriesMap).map(([key, s]) => {
+      const posts = allPosts.filter(p => p.data.series === key);
+      return (
+        <div class="series-section">
+          <div class="series-section-hd">
+            <span>{s.emoji} {s.name}</span>
+            <span class="series-badge" style={`background:${s.color};color:${s.textColor}`}>{posts.length}</span>
+          </div>
+          {posts.length === 0 ? (
+            <p class="no-posts">No posts yet. Coming soon.</p>
+          ) : posts.map((post, i) => (
+            <a href={`/posts/${post.id}`} class="series-post-row">
+              <span class="spr-num">{String(i+1).padStart(2,'0')}</span>
+              <span class="spr-title">{post.data.title}</span>
+              <div class="spr-tags">
+                {post.data.tags.map(tag => <span class="tag-pill">{tag}</span>)}
+              </div>
+              <span class="spr-date">{post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
+            </a>
+          ))}
+        </div>
+      );
+    })}
+  </div>
+
+  <script>
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      localStorage.setItem('theme', isLight ? 'dark' : 'light');
+      document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
+    });
+    if (saved === 'light') document.getElementById('themeToggle').textContent = '☀';
+  </script>
+</Base>

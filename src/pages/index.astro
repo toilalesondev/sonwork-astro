@@ -1,22 +1,196 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('posts', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allPosts = (await getCollection('posts', ({data}) => !data.draft))
+  .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-function fmtDate(d: Date) {
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-}
+const seriesMap: Record<string, {name:string, emoji:string, color:string, textColor:string}> = {
+  'life-book':    { name:'Life Book',    emoji:'📖', color:'#1a3a6b', textColor:'#fff' },
+  'experiences':  { name:'Experiences',  emoji:'🛤️', color:'#7c3a00', textColor:'#ffd6a5' },
+  'human':        { name:'Human',        emoji:'🧠', color:'#4a1a3a', textColor:'#f9b8d4' },
+};
+
+const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
+const seriesCounts = Object.fromEntries(
+  Object.keys(seriesMap).map(s => [s, allPosts.filter(p => p.data.series === s).length])
+);
 ---
+<Base>
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
+    <div class="nav-links">
+      <a href="/" class="nav-link active">Dashboard</a>
+      <a href="/series" class="nav-link">Series</a>
+      <a href="/contact" class="nav-link">Contact</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☽</button>
+  </nav>
 
-<Base title="Sơn">
-  <ul class="post-list">
-    {posts.map(post => (
-      <li>
-        <a href={`/posts/${post.id}`}>{post.data.title}</a>
-        <span class="date">{fmtDate(post.data.pubDate)}</span>
-      </li>
-    ))}
-  </ul>
+  <!-- DASHBOARD -->
+  <div class="dashboard-wrap">
+    <main class="dash-main">
+
+      <!-- HERO -->
+      <section class="hero">
+        <img src="/son.jpg" alt="Sơn Lê" class="hero-photo"/>
+        <div class="hero-text">
+          <h1 class="hero-name">Sơn Lê</h1>
+          <div class="hero-roles">
+            <span>VC</span>
+            <span class="role-arrow">→</span>
+            <span>Operator</span>
+            <span class="role-arrow">→</span>
+            <span>Builder</span>
+          </div>
+          <div class="hero-company">
+            Co-founder, <a href="https://perfeat.org" target="_blank" rel="noopener">Perfeat.org ↗</a>
+          </div>
+          <p class="hero-bio">
+            I've sat on every side of the table — backing founders, running ops, now building from scratch.
+            This is where I write about what I see, what I live through, and what it means to be human in all of it.
+          </p>
+          <div class="hero-ctas">
+            <a href="/series" class="btn-primary">Read my writing</a>
+            <a href="/contact" class="btn-outline">Get in touch</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEED HEADER -->
+      <div class="feed-header">
+        <span class="feed-label">Recent writing</span>
+        <!-- TABS -->
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-series="all">All</button>
+          {Object.entries(seriesMap).map(([key, s]) => (
+            <button class="tab" data-series={key}>{s.name}</button>
+          ))}
+        </div>
+      </div>
+
+      <!-- ACTIVE TAG INDICATOR -->
+      <div id="activeTagBar" class="active-tag-bar" style="display:none">
+        Filtering by: <span id="activeTagLabel"></span>
+        <button onclick="clearTag()">× clear</button>
+      </div>
+
+      <!-- POST FEED -->
+      <div class="post-feed" id="postFeed">
+        {allPosts.map((post, i) => {
+          const s = seriesMap[post.data.series];
+          return (
+            <a href={`/posts/${post.id}`}
+               class="post-card"
+               data-series={post.data.series}
+               data-tags={post.data.tags.join(',')}>
+              <span class="post-num">{String(i+1).padStart(2,'0')}</span>
+              <div class="post-body-text">
+                <div class="post-title">{post.data.title}</div>
+                <div class="post-excerpt">{post.data.description}</div>
+                <div class="post-meta-row">
+                  <span class="series-badge" style={`background:${s.color};color:${s.textColor}`}>
+                    {s.emoji} {s.name}
+                  </span>
+                  {post.data.tags.map(tag => (
+                    <button class="tag-pill" data-tag={tag} onclick={`filterTag(event,'${tag}')`}>{tag}</button>
+                  ))}
+                  <span class="post-date">{post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
+                  <span class="post-read">{post.data.readTime} read</span>
+                </div>
+              </div>
+              <div class="post-thumb">{post.data.emoji}</div>
+            </a>
+          );
+        })}
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Series</div>
+        {Object.entries(seriesMap).map(([key, s]) => (
+          <a href="/series" class="sidebar-series-row">
+            <span class="ssrow-icon" style={`background:${s.color}22`}>{s.emoji}</span>
+            <span class="ssrow-name">{s.name}</span>
+            <span class="ssrow-count">{seriesCounts[key]}</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Tags</div>
+        <div class="tag-cloud" id="tagCloud">
+          {allTags.map(tag => (
+            <button class="tag-pill sidebar-tag" data-tag={tag} onclick={`filterTag(event,'${tag}')`}>{tag}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="sidebar-about">
+        Writing about life, building, and what it means to be human.
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Theme
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      localStorage.setItem('theme', isLight ? 'dark' : 'light');
+      document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
+    });
+    if (saved === 'light') document.getElementById('themeToggle').textContent = '☀';
+
+    // Tab filtering
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const series = btn.dataset.series;
+        clearTagSilent();
+        document.querySelectorAll('.post-card').forEach(card => {
+          card.style.display = (series === 'all' || card.dataset.series === series) ? 'flex' : 'none';
+        });
+      });
+    });
+
+    // Tag filtering
+    let activeTag = null;
+    window.filterTag = function(e, tag) {
+      e.preventDefault(); e.stopPropagation();
+      if (activeTag === tag) { clearTag(); return; }
+      activeTag = tag;
+      // reset tabs
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      document.querySelector('.tab[data-series="all"]').classList.add('active');
+      // filter cards
+      document.querySelectorAll('.post-card').forEach(card => {
+        const tags = (card.dataset.tags || '').split(',');
+        card.style.display = tags.includes(tag) ? 'flex' : 'none';
+      });
+      // highlight tag pills
+      document.querySelectorAll('.tag-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.tag === tag);
+      });
+      // show bar
+      document.getElementById('activeTagBar').style.display = 'flex';
+      document.getElementById('activeTagLabel').textContent = tag;
+    };
+    window.clearTag = function() {
+      clearTagSilent();
+      document.querySelectorAll('.post-card').forEach(c => c.style.display = 'flex');
+    };
+    function clearTagSilent() {
+      activeTag = null;
+      document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('active'));
+      document.getElementById('activeTagBar').style.display = 'none';
+    }
+  </script>
 </Base>

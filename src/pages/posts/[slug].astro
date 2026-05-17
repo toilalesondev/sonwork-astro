@@ -1,42 +1,81 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
-  return posts.map(post => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  const posts = await getCollection('posts', ({data}) => !data.draft);
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
 }
-
-import { render } from 'astro:content';
 
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-function fmtDate(d: Date) {
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
+const seriesMap: Record<string, {name:string, emoji:string, color:string, textColor:string}> = {
+  'life-book':   { name:'Life Book',   emoji:'📖', color:'#1a3a6b', textColor:'#fff' },
+  'experiences': { name:'Experiences', emoji:'🛤️', color:'#7c3a00', textColor:'#ffd6a5' },
+  'human':       { name:'Human',       emoji:'🧠', color:'#4a1a3a', textColor:'#f9b8d4' },
+};
+const s = seriesMap[post.data.series];
 ---
+<Base title={`${post.data.title} — Sơn Lê`} description={post.data.description}>
+  <nav id="nav">
+    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Dashboard</a>
+      <a href="/series" class="nav-link">Series</a>
+      <a href="/contact" class="nav-link">Contact</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☽</button>
+  </nav>
 
-<Base title={post.data.title} description={post.data.description}>
-  <article>
-    <header class="post-header">
-      <h1>{post.data.title}</h1>
-      <div class="post-meta">
-        <span>{fmtDate(post.data.pubDate)}</span>
-        {post.data.tags && post.data.tags.length > 0 && (
-          <div class="tags">
-            {post.data.tags.map(tag => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-        )}
+  <article class="post-article">
+    <a href="/series" class="back-btn">← {s.name}</a>
+
+    <h1 class="post-article-title">{post.data.title}</h1>
+    {post.data.description && <p class="post-article-sub">{post.data.description}</p>}
+
+    <div class="post-article-author">
+      <img src="/son.jpg" alt="Sơn Lê" class="paa-photo"/>
+      <div class="paa-info">
+        <div class="paa-name">Sơn Lê</div>
+        <div class="paa-meta">
+          {post.data.pubDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}
+          · {post.data.readTime} read
+        </div>
       </div>
-    </header>
-    <div class="post-body">
-      <Content />
+      <span class="series-badge" style={`background:${s.color};color:${s.textColor}`}>
+        {s.emoji} {s.name}
+      </span>
+      <div class="paa-tags">
+        {post.data.tags.map(tag => <span class="tag-pill">{tag}</span>)}
+      </div>
+    </div>
+
+    <div class="post-hero">{post.data.emoji}</div>
+
+    <div class="post-content">
+      <Content/>
+    </div>
+
+    <div class="clap-row">
+      <button class="clap-btn" id="clapBtn">👏 <span id="clapCount">0</span></button>
+      <a href="/" class="btn-outline" style="font-size:13px">← Back to writing</a>
     </div>
   </article>
+
+  <script>
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      localStorage.setItem('theme', isLight ? 'dark' : 'light');
+      document.getElementById('themeToggle').textContent = isLight ? '☽' : '☀';
+    });
+    if (saved === 'light') document.getElementById('themeToggle').textContent = '☀';
+    let claps = 0;
+    document.getElementById('clapBtn').addEventListener('click', () => {
+      document.getElementById('clapCount').textContent = ++claps;
+    });
+  </script>
 </Base>

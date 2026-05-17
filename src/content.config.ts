@@ -7,8 +7,11 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     pubDate: z.date(),
-    tags: z.array(z.string()).optional().default([]),
-    draft: z.boolean().optional().default(false),
+    series: z.enum(['life-book', 'experiences', 'human']),
+    tags: z.array(z.string()).default([]),
+    readTime: z.string().default('3 min'),
+    draft: z.boolean().default(false),
+    emoji: z.string().default('📝'),
   }),
 });
 
