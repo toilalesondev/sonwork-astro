@@ -1,0 +1,737 @@
+---
+import BaseLayout from '../layouts/Base.astro';
+---
+
+<BaseLayout title="Brain — sonwork.org" description="Son's living knowledge graph">
+  <div class="brain-page">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-meta">workspace.sonwork.org / brain</div>
+      <h1>The Brain <span class="pulse"></span></h1>
+      <p class="subtitle">6 agents. 1 shared Postgres. Every thought linked.</p>
+    </div>
+
+    <!-- Live stats bar -->
+    <div class="stats-bar">
+      <div class="stat"><span class="num">2,052</span><span class="lbl">pages</span></div>
+      <div class="stat"><span class="num">2,072</span><span class="lbl">timeline entries</span></div>
+      <div class="stat"><span class="num">1,249</span><span class="lbl">links</span></div>
+      <div class="stat"><span class="num">7</span><span class="lbl">sources</span></div>
+      <div class="stat"><span class="num">100</span><span class="lbl">health score</span></div>
+      <div class="stat"><span class="num">100%</span><span class="lbl">embedded</span></div>
+    </div>
+
+    <!-- Two-column layout -->
+    <div class="two-col">
+
+      <!-- LEFT: Architecture -->
+      <div class="col">
+
+        <!-- What is gbrain -->
+        <section class="card">
+          <h2>What Is This</h2>
+          <p>
+            gbrain is a shared Postgres database that acts as the collective memory for the entire agent fleet.
+            Every agent writes its own knowledge. Everyone reads everything.
+            ZeroEntropy embeds every page into 1280-dimensional vectors — so search is semantic, not keyword.
+          </p>
+          <div class="arch-diagram">
+            <div class="arch-row">
+              <div class="arch-box sir">Sir</div>
+            </div>
+            <div class="arch-arrows">↕ reads/writes via each agent</div>
+            <div class="arch-row agents">
+              <div class="arch-box robin">Robin</div>
+              <div class="arch-box karpathy">Karpathy</div>
+              <div class="arch-box augustus">Augustus</div>
+              <div class="arch-box lando">Lando</div>
+              <div class="arch-box aurelius">Aurelius</div>
+              <div class="arch-box saman">Saman</div>
+            </div>
+            <div class="arch-arrows">↕ all point to</div>
+            <div class="arch-row">
+              <div class="arch-box db">Supabase Postgres<br/><small>pgvector · ZeroEntropy · 2052 pages</small></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- How to write -->
+        <section class="card">
+          <h2>How to Write</h2>
+          <div class="how-row">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Each agent has its own source namespace</strong><br/>
+              <code>GBRAIN_SOURCE=robin</code> means pages go to the <em>robin</em> bucket. Never cross-write.
+            </div>
+          </div>
+          <div class="how-row">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Slug = folder structure</strong><br/>
+              <code>robin/ops/daily-recap-2026-05-19</code><br/>
+              <code>shared/sir/people/ray-dalio</code><br/>
+              <code>karpathy/projects/perfeat/auth-refactor</code>
+            </div>
+          </div>
+          <div class="how-row">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Write a markdown file, then <code>gbrain put</code></strong><br/>
+              <code class="block">gbrain put robin/ops/my-note ./note.md</code>
+              gbrain embeds it via ZeroEntropy automatically.
+            </div>
+          </div>
+          <div class="how-row">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Always cite the commons with <code>[[wikilinks]]</code></strong><br/>
+              If you mention a person → <code>[[shared/sir/people/ray-dalio]]</code><br/>
+              If you mention a project → <code>[[shared/sir/projects/perfeat]]</code><br/>
+              If you reference a decision → <code>[[shared/team/decisions/the-slug]]</code>
+            </div>
+          </div>
+        </section>
+
+        <!-- How to read -->
+        <section class="card">
+          <h2>How to Read</h2>
+          <div class="how-row">
+            <div class="step-num">→</div>
+            <div class="step-body">
+              <strong>Search</strong> — semantic, crosses all sources<br/>
+              <code class="block">gbrain search "dalio principles on pain"</code>
+            </div>
+          </div>
+          <div class="how-row">
+            <div class="step-num">→</div>
+            <div class="step-body">
+              <strong>Get</strong> — exact slug<br/>
+              <code class="block">gbrain get shared/sir/people/ray-dalio</code>
+            </div>
+          </div>
+          <div class="how-row">
+            <div class="step-num">→</div>
+            <div class="step-body">
+              <strong>Query</strong> — natural language, reranked answer<br/>
+              <code class="block">gbrain query "what did we decide about MiniMind graduation?"</code>
+            </div>
+          </div>
+          <div class="how-row">
+            <div class="step-num">→</div>
+            <div class="step-body">
+              <strong>Multi-source fan-out</strong> — Robin reads everything<br/>
+              <code class="block">GBRAIN_SOURCES=robin,shared,karpathy,lando,augustus,saman,aurelius</code>
+              Other agents: <code>GBRAIN_SOURCES=&lt;agent&gt;,shared</code>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT: Live data -->
+      <div class="col">
+
+        <!-- Source breakdown -->
+        <section class="card">
+          <h2>Source Breakdown</h2>
+          <div class="source-list">
+            <div class="source-row">
+              <div class="source-name shared">shared</div>
+              <div class="source-bar-wrap"><div class="source-bar" style="width:69%"></div></div>
+              <div class="source-count">1,419</div>
+              <div class="source-role">Company commons — Sir's knowledge, team decisions, fleet policy</div>
+            </div>
+            <div class="source-row">
+              <div class="source-name robin">robin</div>
+              <div class="source-bar-wrap"><div class="source-bar" style="width:26%"></div></div>
+              <div class="source-count">538</div>
+              <div class="source-role">Ops, session recaps, research, agent coordination</div>
+            </div>
+            <div class="source-row">
+              <div class="source-name karpathy">karpathy</div>
+              <div class="source-bar-wrap"><div class="source-bar" style="width:2%"></div></div>
+              <div class="source-count">44</div>
+              <div class="source-role">Code research, Perfeat project, engineering decisions</div>
+            </div>
+            <div class="source-row">
+              <div class="source-name aurelius">aurelius</div>
+              <div class="source-bar-wrap"><div class="source-bar" style="width:1.5%"></div></div>
+              <div class="source-count">30</div>
+              <div class="source-role">Platform ops, config, system health</div>
+            </div>
+            <div class="source-row">
+              <div class="source-name augustus">augustus</div>
+              <div class="source-bar-wrap"><div class="source-bar" style="width:0.7%"></div></div>
+              <div class="source-count">15</div>
+              <div class="source-role">WeCare COO ops, project execution</div>
+            </div>
+            <div class="source-row">
+              <div class="source-name lando">lando</div>
+              <div class="source-bar-wrap"><div class="source-bar" style="width:0.3%"></div></div>
+              <div class="source-count">5</div>
+              <div class="source-role">F1 data, race content</div>
+            </div>
+            <div class="source-row">
+              <div class="source-name saman">saman</div>
+              <div class="source-bar-wrap"><div class="source-bar" style="width:0.1%"></div></div>
+              <div class="source-count">1</div>
+              <div class="source-role">AI engineering curriculum, teaching notes</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Namespace map -->
+        <section class="card">
+          <h2>Namespace Map</h2>
+          <p class="card-sub">V5 taxonomy — where every page lives</p>
+          <div class="ns-grid">
+            <div class="ns-group">
+              <div class="ns-header">shared/sir/</div>
+              <div class="ns-items">
+                <span class="ns-item">knowledge/</span>
+                <span class="ns-item">people/</span>
+                <span class="ns-item">quotes/</span>
+                <span class="ns-item">projects/</span>
+                <span class="ns-item">notes/</span>
+              </div>
+              <div class="ns-count">763 pages · Sir's personal OS</div>
+            </div>
+            <div class="ns-group">
+              <div class="ns-header">robin/ops/</div>
+              <div class="ns-items">
+                <span class="ns-item">session-recaps/</span>
+                <span class="ns-item">daily/</span>
+                <span class="ns-item">handoffs/</span>
+              </div>
+              <div class="ns-count">558 pages · Daily work log</div>
+            </div>
+            <div class="ns-group">
+              <div class="ns-header">robin/research/</div>
+              <div class="ns-items">
+                <span class="ns-item">ai/</span>
+                <span class="ns-item">products/</span>
+              </div>
+              <div class="ns-count">156 pages · Research & synthesis</div>
+            </div>
+            <div class="ns-group">
+              <div class="ns-header">shared/fleet/</div>
+              <div class="ns-items">
+                <span class="ns-item">policy/</span>
+                <span class="ns-item">bulletins/</span>
+                <span class="ns-item">incidents/</span>
+                <span class="ns-item">ops/</span>
+              </div>
+              <div class="ns-count">38 pages · Fleet rules & ops</div>
+            </div>
+            <div class="ns-group">
+              <div class="ns-header">shared/team/</div>
+              <div class="ns-items">
+                <span class="ns-item">decisions/</span>
+                <span class="ns-item">architecture/</span>
+              </div>
+              <div class="ns-count">31 pages · Cross-agent decisions</div>
+            </div>
+            <div class="ns-group">
+              <div class="ns-header">karpathy/</div>
+              <div class="ns-items">
+                <span class="ns-item">projects/perfeat/</span>
+                <span class="ns-item">references/</span>
+                <span class="ns-item">workflows/</span>
+              </div>
+              <div class="ns-count">44 pages · Engineering work</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Content types -->
+        <section class="card">
+          <h2>Content Types</h2>
+          <div class="type-grid">
+            <div class="type-pill note">note <span>732</span></div>
+            <div class="type-pill concept">concept <span>376</span></div>
+            <div class="type-pill book-note">book-note <span>234</span></div>
+            <div class="type-pill quote">quote <span>180</span></div>
+            <div class="type-pill session">session <span>97</span></div>
+            <div class="type-pill legacy">legacy <span>88</span></div>
+            <div class="type-pill reference">reference <span>65</span></div>
+            <div class="type-pill person">person <span>55</span></div>
+            <div class="type-pill project">project <span>32</span></div>
+            <div class="type-pill ops">ops <span>28</span></div>
+            <div class="type-pill skill">skill <span>26</span></div>
+            <div class="type-pill research">research <span>24</span></div>
+            <div class="type-pill decision">decision <span>15</span></div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Full-width: Knowledge Graph -->
+    <section class="card full-width">
+      <h2>Knowledge Graph</h2>
+      <p class="card-sub">How pages link to each other. Hover nodes to explore.</p>
+      <div class="graph-container">
+        <canvas id="graphCanvas"></canvas>
+        <div class="graph-legend">
+          <span class="legend-dot shared"></span> shared
+          <span class="legend-dot robin"></span> robin
+          <span class="legend-dot karpathy"></span> karpathy
+          <span class="legend-dot augustus"></span> augustus
+          <span class="legend-dot aurelius"></span> aurelius
+          <span class="legend-dot lando"></span> lando
+          <span class="legend-dot saman"></span> saman
+        </div>
+        <div class="graph-tooltip" id="graphTooltip"></div>
+      </div>
+    </section>
+
+    <!-- Full-width: Link matrix -->
+    <section class="card full-width">
+      <h2>Cross-Agent Link Matrix</h2>
+      <p class="card-sub">How many times each source references another. Robin is the super-reader — she links everywhere.</p>
+      <div class="matrix-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>FROM ↓ / TO →</th>
+              <th class="shared">shared</th>
+              <th class="robin">robin</th>
+              <th class="karpathy">karpathy</th>
+              <th class="augustus">augustus</th>
+              <th class="aurelius">aurelius</th>
+              <th class="lando">lando</th>
+              <th class="saman">saman</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-label robin">robin</td>
+              <td class="hot">867</td>
+              <td class="warm">70</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="cool">2</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td class="row-label shared">shared</td>
+              <td class="warm">182</td>
+              <td class="cool">3</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td class="row-label karpathy">karpathy</td>
+              <td class="cool">3</td>
+              <td>—</td>
+              <td class="warm">84</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td class="row-label aurelius">aurelius</td>
+              <td class="cool">3</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="warm">56</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td class="row-label augustus">augustus</td>
+              <td class="cool">3</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="warm">24</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td class="row-label lando">lando</td>
+              <td class="cool">3</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="cool">6</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td class="row-label saman">saman</td>
+              <td class="cool">3</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Full-width: Top hubs -->
+    <section class="card full-width">
+      <h2>Top Hub Pages</h2>
+      <p class="card-sub">Most-linked pages = the company's highest-value nodes</p>
+      <div class="hubs-list">
+        <div class="hub-row">
+          <div class="hub-rank">1</div>
+          <div class="hub-slug">shared/sir/people/index</div>
+          <div class="hub-source shared">shared</div>
+          <div class="hub-links">66 inbound</div>
+          <div class="hub-desc">People directory — every person ever mentioned by any agent</div>
+        </div>
+        <div class="hub-row">
+          <div class="hub-rank">2</div>
+          <div class="hub-slug">karpathy/reports/2026-05-12-why-assistant-cannot-host-permanent-brv-mcp</div>
+          <div class="hub-source karpathy">karpathy</div>
+          <div class="hub-links">42 inbound</div>
+          <div class="hub-desc">Key architecture decision report — referenced everywhere</div>
+        </div>
+        <div class="hub-row">
+          <div class="hub-rank">3</div>
+          <div class="hub-slug">shared/team/index</div>
+          <div class="hub-source shared">shared</div>
+          <div class="hub-links">5 inbound</div>
+          <div class="hub-desc">Team org-chart — links to all 6 agent department indexes</div>
+        </div>
+        <div class="hub-row">
+          <div class="hub-rank">4</div>
+          <div class="hub-slug">shared/team/architecture/gbrain-namespace-v5</div>
+          <div class="hub-source shared">shared</div>
+          <div class="hub-links">5 inbound</div>
+          <div class="hub-desc">V5 taxonomy spec — the law every agent follows</div>
+        </div>
+        <div class="hub-row">
+          <div class="hub-rank">5–15</div>
+          <div class="hub-slug">shared/sir/people/*</div>
+          <div class="hub-source shared">shared</div>
+          <div class="hub-links">4 inbound each</div>
+          <div class="hub-desc">Ray Dalio, Joe Studwell, Andrew Grove, Minh, Odysseas, Ayumu…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full-width: timeline -->
+    <section class="card full-width">
+      <h2>Timeline Coverage</h2>
+      <p class="card-sub">2,072 entries spanning 2026-02-22 → today. Every page dated = navigable history.</p>
+      <div class="timeline-bar-wrap">
+        <div class="timeline-months" id="timelineMonths"></div>
+      </div>
+    </section>
+
+    <!-- How it all links -->
+    <section class="card full-width">
+      <h2>How Everything Links — The Company Model</h2>
+      <div class="company-model">
+        <div class="model-col">
+          <h3>🏢 Company Wiki = <code>shared/</code></h3>
+          <p>Policies, people directory, project hubs, cross-team decisions. Every agent reads this. Robin curates it.</p>
+          <ul>
+            <li><code>shared/sir/people/</code> — one record per person, all agents add notes</li>
+            <li><code>shared/sir/projects/</code> — project hub pages (Perfeat, WeCare…)</li>
+            <li><code>shared/team/decisions/</code> — decisions that affect everyone</li>
+            <li><code>shared/fleet/policy/</code> — rules every agent follows</li>
+          </ul>
+        </div>
+        <div class="model-col">
+          <h3>📂 Department Docs = <code>&lt;agent&gt;/</code></h3>
+          <p>Each agent's own working papers. Private by convention, readable by Robin.</p>
+          <ul>
+            <li><code>robin/ops/</code> — daily ops, session recaps, coordination</li>
+            <li><code>karpathy/projects/perfeat/</code> — Karpathy's engineering work</li>
+            <li><code>augustus/projects/wecare/</code> — Augustus's COO ops</li>
+            <li><code>lando/</code> — F1 data and race content</li>
+          </ul>
+        </div>
+        <div class="model-col">
+          <h3>🔗 Cross-Dept References = Wikilinks</h3>
+          <p>Every memo cites the relevant policy doc and the person's file. No page is an island.</p>
+          <ul>
+            <li>Person mentioned → <code>[[shared/sir/people/slug]]</code></li>
+            <li>Project mentioned → <code>[[shared/sir/projects/slug]]</code></li>
+            <li>Decision referenced → <code>[[shared/team/decisions/slug]]</code></li>
+            <li>Own work → links back to <code>[[&lt;agent&gt;/index]]</code></li>
+          </ul>
+        </div>
+        <div class="model-col">
+          <h3>🔍 Implicit Graph = ZeroEntropy</h3>
+          <p>No wikilink needed. Every page embedded at 1280 dims. Search returns semantically related pages across all sources. zerank-2 reranks results.</p>
+          <ul>
+            <li>Cost: $0.05 / 1M tokens embed</li>
+            <li>Cost: $0.025 / 1M tokens rerank</li>
+            <li>Coverage: 100% of all 2,052 pages</li>
+            <li>Model: zeroentropyai:zembed-1</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<script>
+  // ── Graph canvas ──────────────────────────────────────────────────────────
+  const canvas = document.getElementById('graphCanvas');
+  const tooltip = document.getElementById('graphTooltip');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    const W = canvas.parentElement.offsetWidth;
+    const H = 360;
+    canvas.width = W;
+    canvas.height = H;
+
+    const colors = {
+      shared: '#e8a045', robin: '#60a5fa', karpathy: '#34d399',
+      augustus: '#f472b6', aurelius: '#a78bfa', lando: '#fb923c', saman: '#94a3b8'
+    };
+
+    const nodes = [
+      { id:'shared',    x:W*0.5,  y:H*0.5,  r:48, pages:1419, color:colors.shared    },
+      { id:'robin',     x:W*0.2,  y:H*0.3,  r:28, pages:538,  color:colors.robin     },
+      { id:'karpathy',  x:W*0.8,  y:H*0.3,  r:16, pages:44,   color:colors.karpathy  },
+      { id:'aurelius',  x:W*0.15, y:H*0.65, r:13, pages:30,   color:colors.aurelius  },
+      { id:'augustus',  x:W*0.78, y:H*0.65, r:11, pages:15,   color:colors.augustus  },
+      { id:'lando',     x:W*0.5,  y:H*0.12, r:8,  pages:5,    color:colors.lando     },
+      { id:'saman',     x:W*0.55, y:H*0.85, r:6,  pages:1,    color:colors.saman     },
+    ];
+
+    const edges = [
+      { from:'robin',    to:'shared',   w:6 },
+      { from:'karpathy', to:'shared',   w:2 },
+      { from:'aurelius', to:'shared',   w:2 },
+      { from:'augustus', to:'shared',   w:2 },
+      { from:'lando',    to:'shared',   w:2 },
+      { from:'saman',    to:'shared',   w:1 },
+      { from:'shared',   to:'robin',    w:1 },
+      { from:'robin',    to:'aurelius', w:1 },
+    ];
+
+    function draw(hoverId) {
+      ctx.clearRect(0, 0, W, H);
+      // edges
+      edges.forEach(e => {
+        const a = nodes.find(n=>n.id===e.from);
+        const b = nodes.find(n=>n.id===e.to);
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = hoverId && (e.from===hoverId||e.to===hoverId) ? '#e8a045' : 'rgba(255,255,255,0.1)';
+        ctx.lineWidth = e.w;
+        ctx.stroke();
+      });
+      // nodes
+      nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+        ctx.fillStyle = hoverId===n.id ? '#fff' : n.color;
+        ctx.globalAlpha = hoverId && hoverId!==n.id ? 0.4 : 1;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        // label
+        ctx.fillStyle = '#0a0a0a';
+        ctx.font = `bold ${Math.max(9, n.r*0.45)}px JetBrains Mono, monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        if (n.r > 10) ctx.fillText(n.id, n.x, n.y);
+      });
+    }
+    draw(null);
+
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      let hit = null;
+      nodes.forEach(n => {
+        const d = Math.hypot(mx-n.x, my-n.y);
+        if (d < n.r + 8) hit = n;
+      });
+      draw(hit?.id || null);
+      if (hit) {
+        tooltip.style.display = 'block';
+        tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+        tooltip.style.top = (e.clientY - rect.top - 8) + 'px';
+        tooltip.textContent = `${hit.id} · ${hit.pages.toLocaleString()} pages`;
+        canvas.style.cursor = 'pointer';
+      } else {
+        tooltip.style.display = 'none';
+        canvas.style.cursor = 'default';
+      }
+    });
+    canvas.addEventListener('mouseleave', () => { draw(null); tooltip.style.display='none'; });
+  }
+
+  // ── Timeline bar ──────────────────────────────────────────────────────────
+  const tl = document.getElementById('timelineMonths');
+  if (tl) {
+    const months = ['Feb','Mar','Apr','May'];
+    const counts = [120, 680, 890, 382]; // approximate monthly distribution
+    const max = Math.max(...counts);
+    months.forEach((m, i) => {
+      const col = document.createElement('div');
+      col.className = 'tl-col';
+      const pct = Math.round(counts[i]/max*100);
+      col.innerHTML = `<div class="tl-bar" style="height:${pct}%"></div><div class="tl-label">${m} '26</div><div class="tl-num">${counts[i]}</div>`;
+      tl.appendChild(col);
+    });
+  }
+</script>
+
+<style>
+  .brain-page { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .page-header { margin-bottom: 2.5rem; }
+  .header-meta { font-family: 'JetBrains Mono', monospace; color: #555; font-size: 0.8rem; margin-bottom: 0.5rem; }
+  .page-header h1 { font-size: 2.4rem; font-weight: 700; color: #f0f0f0; margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.75rem; }
+  .pulse { display: inline-block; width: 10px; height: 10px; background: #e8a045; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+  .subtitle { color: #777; font-size: 1rem; margin: 0; }
+
+  .stats-bar { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; background: #111; border: 1px solid #222; border-radius: 8px; }
+  .stat { display: flex; flex-direction: column; gap: 0.15rem; }
+  .stat .num { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; color: #e8a045; }
+  .stat .lbl { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media(max-width:768px) { .two-col { grid-template-columns: 1fr; } }
+
+  .card { background: #0f0f0f; border: 1px solid #1e1e1e; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card h2 { font-size: 1rem; font-weight: 600; color: #e8a045; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 1rem; }
+  .card p { color: #888; line-height: 1.6; margin: 0 0 1rem; font-size: 0.9rem; }
+  .card-sub { color: #555; font-size: 0.82rem; margin: -0.5rem 0 1rem; }
+  .full-width { grid-column: 1/-1; }
+
+  /* Architecture diagram */
+  .arch-diagram { margin-top: 1.25rem; text-align: center; }
+  .arch-row { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+  .arch-row.agents { gap: 0.4rem; }
+  .arch-arrows { color: #444; font-size: 0.75rem; margin: 0.5rem 0; }
+  .arch-box { padding: 0.4rem 0.8rem; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 600; border: 1px solid; }
+  .arch-box.sir { background: #1a1a0a; border-color: #e8a045; color: #e8a045; }
+  .arch-box.db { background: #0a120a; border-color: #34d399; color: #34d399; padding: 0.5rem 1.5rem; }
+  .arch-box.robin { background: #0a0f1a; border-color: #60a5fa; color: #60a5fa; }
+  .arch-box.karpathy { background: #0a1410; border-color: #34d399; color: #34d399; }
+  .arch-box.augustus { background: #1a0a12; border-color: #f472b6; color: #f472b6; }
+  .arch-box.lando { background: #1a0f0a; border-color: #fb923c; color: #fb923c; }
+  .arch-box.aurelius { background: #120a1a; border-color: #a78bfa; color: #a78bfa; }
+  .arch-box.saman { background: #111; border-color: #94a3b8; color: #94a3b8; }
+
+  /* How to read/write steps */
+  .how-row { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start; }
+  .step-num { min-width: 28px; height: 28px; background: #1a1a0a; border: 1px solid #e8a045; color: #e8a045; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; }
+  .step-body { color: #999; font-size: 0.85rem; line-height: 1.6; }
+  .step-body strong { color: #ddd; }
+  code { background: #1a1a1a; color: #e8a045; padding: 0.1em 0.4em; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
+  code.block { display: block; padding: 0.5rem 0.75rem; margin: 0.4rem 0; border-left: 2px solid #e8a045; background: #111; }
+
+  /* Source list */
+  .source-list { display: flex; flex-direction: column; gap: 0.9rem; }
+  .source-row { display: grid; grid-template-columns: 80px 1fr 48px; gap: 0.5rem; align-items: center; }
+  .source-name { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; }
+  .source-name.shared { color: #e8a045; }
+  .source-name.robin { color: #60a5fa; }
+  .source-name.karpathy { color: #34d399; }
+  .source-name.aurelius { color: #a78bfa; }
+  .source-name.augustus { color: #f472b6; }
+  .source-name.lando { color: #fb923c; }
+  .source-name.saman { color: #94a3b8; }
+  .source-bar-wrap { background: #1a1a1a; border-radius: 3px; height: 6px; overflow: hidden; }
+  .source-bar { height: 100%; background: #e8a045; border-radius: 3px; }
+  .source-count { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #888; text-align: right; }
+  .source-role { grid-column: 1/-1; font-size: 0.75rem; color: #555; margin-top: -0.3rem; }
+
+  /* Namespace grid */
+  .ns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .ns-group { background: #111; border: 1px solid #1e1e1e; border-radius: 6px; padding: 0.75rem; }
+  .ns-header { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #e8a045; font-weight: 700; margin-bottom: 0.4rem; }
+  .ns-items { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.4rem; }
+  .ns-item { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #888; background: #1a1a1a; padding: 0.1rem 0.4rem; border-radius: 3px; }
+  .ns-count { font-size: 0.7rem; color: #555; }
+
+  /* Type pills */
+  .type-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .type-pill { display: flex; align-items: center; gap: 0.4rem; background: #111; border: 1px solid #222; border-radius: 20px; padding: 0.2rem 0.75rem; font-size: 0.78rem; color: #aaa; }
+  .type-pill span { font-family: 'JetBrains Mono', monospace; color: #e8a045; font-size: 0.72rem; }
+
+  /* Graph */
+  .graph-container { position: relative; background: #080808; border-radius: 8px; overflow: hidden; border: 1px solid #1a1a1a; }
+  #graphCanvas { display: block; width: 100%; }
+  .graph-legend { position: absolute; bottom: 12px; left: 12px; display: flex; gap: 1rem; flex-wrap: wrap; }
+  .legend-dot { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: #888; }
+  .legend-dot::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+  .legend-dot.shared::before { background: #e8a045; }
+  .legend-dot.robin::before { background: #60a5fa; }
+  .legend-dot.karpathy::before { background: #34d399; }
+  .legend-dot.augustus::before { background: #f472b6; }
+  .legend-dot.aurelius::before { background: #a78bfa; }
+  .legend-dot.lando::before { background: #fb923c; }
+  .legend-dot.saman::before { background: #94a3b8; }
+  .graph-tooltip { position: absolute; background: #1a1a0a; border: 1px solid #e8a045; color: #e8a045; padding: 0.3rem 0.6rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; pointer-events: none; display: none; white-space: nowrap; }
+
+  /* Matrix */
+  .matrix-wrap { overflow-x: auto; }
+  .matrix { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .matrix th { padding: 0.5rem 0.75rem; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; border-bottom: 1px solid #1e1e1e; }
+  .matrix th.shared { color: #e8a045; }
+  .matrix th.robin { color: #60a5fa; }
+  .matrix th.karpathy { color: #34d399; }
+  .matrix th.augustus { color: #f472b6; }
+  .matrix th.aurelius { color: #a78bfa; }
+  .matrix th.lando { color: #fb923c; }
+  .matrix th.saman { color: #94a3b8; }
+  .matrix td { padding: 0.4rem 0.75rem; text-align: center; color: #555; border-bottom: 1px solid #111; font-family: 'JetBrains Mono', monospace; }
+  .matrix .row-label { text-align: left; font-weight: 700; }
+  .matrix .row-label.shared { color: #e8a045; }
+  .matrix .row-label.robin { color: #60a5fa; }
+  .matrix .row-label.karpathy { color: #34d399; }
+  .matrix .row-label.augustus { color: #f472b6; }
+  .matrix .row-label.aurelius { color: #a78bfa; }
+  .matrix .row-label.lando { color: #fb923c; }
+  .matrix .row-label.saman { color: #94a3b8; }
+  .matrix .hot { color: #e8a045; font-weight: 700; font-size: 1rem; }
+  .matrix .warm { color: #aaa; }
+  .matrix .cool { color: #666; }
+
+  /* Hubs */
+  .hubs-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .hub-row { display: grid; grid-template-columns: 36px 1fr 80px 90px; gap: 0.75rem; align-items: center; padding: 0.75rem; background: #111; border: 1px solid #1a1a1a; border-radius: 6px; }
+  .hub-rank { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #e8a045; font-weight: 700; }
+  .hub-slug { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #ccc; word-break: break-all; }
+  .hub-source { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 3px; text-align: center; }
+  .hub-source.shared { color: #e8a045; background: #1a1a0a; }
+  .hub-source.karpathy { color: #34d399; background: #0a1410; }
+  .hub-links { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #888; text-align: right; }
+  .hub-desc { grid-column: 1/-1; font-size: 0.75rem; color: #555; margin-top: -0.25rem; }
+
+  /* Timeline */
+  .timeline-bar-wrap { margin-top: 0.5rem; }
+  .timeline-months { display: flex; gap: 1rem; align-items: flex-end; height: 100px; }
+  .tl-col { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; height: 100%; justify-content: flex-end; }
+  .tl-bar { width: 100%; background: #e8a045; border-radius: 3px 3px 0 0; min-height: 4px; transition: opacity 0.2s; }
+  .tl-bar:hover { opacity: 0.7; }
+  .tl-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #666; }
+  .tl-num { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #e8a045; }
+
+  /* Company model */
+  .company-model { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media(max-width:768px){ .company-model { grid-template-columns: 1fr; } }
+  .model-col h3 { font-size: 0.88rem; color: #ddd; margin: 0 0 0.5rem; }
+  .model-col p { color: #777; font-size: 0.82rem; margin: 0 0 0.75rem; }
+  .model-col ul { margin: 0; padding-left: 1rem; }
+  .model-col li { color: #666; font-size: 0.8rem; margin-bottom: 0.35rem; line-height: 1.5; }
+</style>
+</BaseLayout>
