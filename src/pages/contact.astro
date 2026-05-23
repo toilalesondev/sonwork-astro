@@ -1,18 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
 ---
 <Base title="Contact — Sơn Lê">
-  <nav class="nav">
-    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
-    <div class="nav-links">
-      <a href="/" class="nav-link">Dashboard</a>
-      <a href="/series" class="nav-link">Series</a>
-      <a href="/contact" class="nav-link active">Contact</a>
-    </div>
-  </nav>
+  <Nav active="contact" />
 
   <div class="contact-wrap">
-    <div class="mono text-3 page-prompt">./contact</div>
+    <div class="page-prompt mono text-3">./contact</div>
     <h1 class="contact-title">Say something worth saying.</h1>
     <p class="contact-sub">No pitches. No collab requests with decks attached. If you have something real to say, the bar is low.</p>
 

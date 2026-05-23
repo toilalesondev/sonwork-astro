@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -18,14 +19,7 @@ const seriesMap: Record<string, {name:string, marker:string, badgeClass:string}>
 const s = seriesMap[post.data.series];
 ---
 <Base title={`${post.data.title} — Sơn Lê`} description={post.data.description}>
-  <nav class="nav">
-    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
-    <div class="nav-links">
-      <a href="/" class="nav-link">Dashboard</a>
-      <a href="/series" class="nav-link">Series</a>
-      <a href="/contact" class="nav-link">Contact</a>
-    </div>
-  </nav>
+  <Nav active="writing" />
 
   <article class="post-article">
     <a href="/" class="back-link mono text-3">← back</a>

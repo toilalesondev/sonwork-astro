@@ -1,0 +1,23 @@
+---
+interface Props {
+  active: 'dashboard' | 'writing' | 'projects' | 'about' | 'contact' | 'gbrain';
+}
+
+const { active } = Astro.props;
+
+const links: { href: string; label: string; id: Props['active'] }[] = [
+  { href: '/', label: 'Dashboard', id: 'dashboard' },
+  { href: '/series', label: 'Writing', id: 'writing' },
+  { href: '/projects', label: 'Projects', id: 'projects' },
+  { href: '/about', label: 'About', id: 'about' },
+  { href: '/contact', label: 'Contact', id: 'contact' },
+];
+---
+<nav class="nav">
+  <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
+  <div class="nav-links">
+    {links.map(link => (
+      <a href={link.href} class:list={['nav-link', { active: link.id === active }]}>{link.label}</a>
+    ))}
+  </div>
+</nav>

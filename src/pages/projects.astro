@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import { projects, statusLabels } from '../data/projects';
+---
+
+<Base title="Projects — Sơn Lê">
+  <Nav active="projects" />
+
+  <div class="page-wrap">
+    <div class="page-prompt mono text-3">./projects</div>
+    <h1 class="page-title">What I'm building</h1>
+    <p class="page-sub">Ventures, products, and experiments. Status reflects current attention.</p>
+
+    <div class="projects-list">
+      {projects.map(p => (
+        <a href={p.url || '#'} class:list={['project-card', { 'no-link': !p.url }]}>
+          <div class="project-hd">
+            <span class="project-emoji">{p.emoji}</span>
+            <div class="project-info">
+              <div class="project-name">{p.name}</div>
+              <div class="project-tagline mono text-3">{p.tagline}</div>
+            </div>
+            <span class:list={['project-status', `status-${p.status}`, 'mono']}>{statusLabels[p.status]}</span>
+            {p.url && <span class="mono text-3 project-arrow">↗</span>}
+          </div>
+          <p class="project-desc">{p.description}</p>
+          <div class="project-highlights">
+            {p.highlights.map(h => (
+              <span class="project-highlight mono">▹ {h}</span>
+            ))}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="projects-legend mono text-3">
+      <span class="legend-dot active-dot"></span> active · actively shipping
+      <span class="legend-dot building-dot"></span> building · in development
+      <span class="legend-dot parked-dot"></span> parked · paused, will revisit
+    </div>
+  </div>
+</Base>

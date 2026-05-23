@@ -1,9 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
 import { getCollection } from 'astro:content';
+import { projects } from '../data/projects';
 
 const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const activeProjects = projects.filter(p => p.status === 'active' || p.status === 'building');
 
 const seriesMap: Record<string, {name:string, marker:string, color:string, badgeClass:string, desc:string}> = {
   'life-book':   { name:'Life Book',   marker:'§',  color:'#1a3a6b', badgeClass:'badge-life', desc:'Year-by-year entries written as they happen, compiled into a physical book at 50. Not memoir — evidence.' },
@@ -18,17 +22,8 @@ const seriesCounts = Object.fromEntries(
 const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime), 0);
 ---
 <Base>
-  <!-- NAV -->
-  <nav class="nav">
-    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
-    <div class="nav-links">
-      <a href="/" class="nav-link active">Dashboard</a>
-      <a href="/series" class="nav-link">Series</a>
-      <a href="/contact" class="nav-link">Contact</a>
-    </div>
-  </nav>
+  <Nav active="dashboard" />
 
-  <!-- DASHBOARD WRAP -->
   <div class="dashboard-wrap">
     <main class="dash-main">
 
@@ -52,11 +47,12 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
             Co-founder, <a href="https://perfeat.org" target="_blank" rel="noopener" class="amber-link">Perfeat.org ↗</a>
           </div>
           <p class="hero-bio">
-            Spent years writing checks, then spent years cashing out reputation. Now I build things in Saigon and write about what I notice.
+            Spent years writing checks, then years cashing out reputation. Now I build things in Saigon and write about what I notice.
           </p>
           <div class="hero-ctas">
-            <a href="/series" class="btn-primary">Read the work</a>
-            <a href="/contact" class="btn-ghost">What is this place</a>
+            <a href="/projects" class="btn-primary">See projects</a>
+            <a href="/series" class="btn-ghost">Read the writing</a>
+            <a href="/about" class="btn-ghost">About me</a>
           </div>
         </div>
         <div class="hero-right">
@@ -67,6 +63,26 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
             <div class="stat-row"><span class="mono text-3">years_logged</span><span class="mono amber">1</span></div>
             <div class="stat-row"><span class="mono text-3">est_read_time</span><span class="mono amber">{totalReadTime} min</span></div>
           </div>
+        </div>
+      </section>
+
+      <!-- FEATURED PROJECTS -->
+      <section class="featured-projects">
+        <div class="fp-header">
+          <span class="mono text-3">featured projects</span>
+          <a href="/projects" class="mono fp-see-all">view all →</a>
+        </div>
+        <div class="fp-grid">
+          {activeProjects.map(p => (
+            <a href={p.url || '/projects'} class="fp-card">
+              <div class="fp-top">
+                <span class="fp-emoji">{p.emoji}</span>
+                <span class:list={['mono', 'fp-status', `fp-${p.status}`]}>{p.status}</span>
+              </div>
+              <div class="fp-name">{p.name}</div>
+              <div class="fp-tagline mono text-3">{p.tagline}</div>
+            </a>
+          ))}
         </div>
       </section>
 
@@ -125,6 +141,16 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
             <span class="mono amber">{s.marker}</span>
             <span class="sb-name">{s.name}</span>
             <span class="mono text-3">{seriesCounts[key]}</span>
+          </a>
+        ))}
+      </div>
+      <div class="sidebar-block">
+        <div class="sidebar-hd mono">PROJECTS</div>
+        {activeProjects.map(p => (
+          <a href={p.url || '/projects'} class="sb-series-row">
+            <span class="mono amber">{p.emoji}</span>
+            <span class="sb-name">{p.name}</span>
+            <span class:list={['mono', 'text-3', `sidebar-status-${p.status}`]}>{p.status}</span>
           </a>
         ))}
       </div>

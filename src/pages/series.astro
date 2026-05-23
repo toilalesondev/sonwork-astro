@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
 import { getCollection } from 'astro:content';
 
 const allPosts = (await getCollection('posts', ({data}) => !data.draft))
@@ -11,22 +12,13 @@ const seriesMap: Record<string, {name:string, marker:string, badgeClass:string, 
   'human':       { name:'Human',       marker:'◎', badgeClass:'badge-human', tagline:'Psychology without the jargon. People without the flattery.', desc:'How people think, decide, break, and convince themselves they didn\'t. More useful than most frameworks.' },
 };
 ---
-<Base title="Series — Sơn Lê">
-  <nav class="nav">
-    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
-    <div class="nav-links">
-      <a href="/" class="nav-link">Dashboard</a>
-      <a href="/series" class="nav-link active">Series</a>
-      <a href="/contact" class="nav-link">Contact</a>
-    </div>
-  </nav>
+<Base title="Writing — Sơn Lê">
+  <Nav active="writing" />
 
   <div class="page-wrap">
-    <div class="page-header">
-      <div class="mono text-3 page-prompt">./series</div>
-      <h1 class="page-title">Series</h1>
-      <p class="page-sub">Long-form collections. Each one is a thread — posts that belong together.</p>
-    </div>
+    <div class="page-prompt mono text-3">./writing</div>
+    <h1 class="page-title">Writing</h1>
+    <p class="page-sub">Thoughts, essays, and series. Each collection is a thread — posts that belong together.</p>
 
     {Object.entries(seriesMap).map(([key, s]) => {
       const posts = allPosts.filter(p => p.data.series === key);
