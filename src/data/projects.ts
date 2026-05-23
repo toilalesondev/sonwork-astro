@@ -43,6 +43,7 @@ export const projects: Project[] = [
     tagline: 'AI-native holding company operating system',
     description: 'The operating system behind how I work. A federated multi-agent brain (gbrain), a fleet of specialized AI agents, and a portfolio management layer that turns knowledge into ventures.',
     status: 'building',
+    url: '/os-v1',
     emoji: '🏗️',
     highlights: [
       '6-agent fleet with shared memory substrate (gbrain)',
