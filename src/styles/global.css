@@ -993,20 +993,32 @@ a { text-decoration: none; color: inherit; }
 .post-content p:first-child::first-letter { font-size:3em;font-weight:800;float:left;line-height:.85;margin:.08em .1em 0 0;color:var(--amber); }
 .post-footer { margin-top:40px;padding-top:20px;border-top:1px solid var(--border); }
 
-/* ── FEATURED PROJECTS BAR (DASHBOARD) ── */
-.fp-bar { display:flex;align-items:center;gap:8px;margin-bottom:28px;padding:8px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:6px; }
-.fp-bar-label { font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-3);flex-shrink:0; }
-.fp-bar-label::after { content:':';color:var(--text-3);margin-left:2px; }
-.fp-bar-list { display:flex;gap:6px;flex:1;flex-wrap:wrap; }
-.fp-bar-item { display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg-3);border:1px solid var(--border-2);border-radius:4px;text-decoration:none;color:inherit;transition:border-color .15s,background .15s; }
-.fp-bar-item:hover { border-color:var(--amber-dim);background:var(--bg-4); }
-.fp-bar-emoji { font-size:13px;line-height:1; }
-.fp-bar-name { font-size:12px;font-weight:500; }
-.fp-bar-status { font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;border-radius:3px;border:1px solid;line-height:1.3; }
-.fp-bar-active { color:#6b9fff;border-color:rgba(107,159,255,0.3);background:rgba(107,159,255,0.07); }
-.fp-bar-building { color:var(--amber);border-color:rgba(232,160,69,0.3);background:rgba(232,160,69,0.07); }
-.fp-bar-all { color:var(--text-3);font-size:13px;text-decoration:none;flex-shrink:0;padding:2px 4px;transition:color .15s; }
-.fp-bar-all:hover { color:var(--amber); }
+/* ── FEATURED PROJECTS (DASHBOARD) ── */
+.fp-section { margin-bottom: 32px; }
+.fp-hd { display:flex;align-items:center;justify-content:space-between;margin-bottom:14px; }
+.fp-hd-label { font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-3); }
+.fp-hd-all { font-size:11px;color:var(--text-3);transition:color .15s;letter-spacing:0.5px; }
+.fp-hd-all:hover { color:var(--amber); }
+.fp-cards { display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px; }
+.fp-card { display:flex;flex-direction:column;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;overflow:hidden;text-decoration:none;color:inherit;transition:border-color .2s,transform .15s,box-shadow .2s;position:relative; }
+.fp-card:hover { transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.3); }
+.fp-card-accent { height:3px;flex-shrink:0; }
+.fp-card-body { padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1; }
+.fp-card-top { display:flex;align-items:center;justify-content:space-between; }
+.fp-card-emoji { font-size:22px;line-height:1; }
+.fp-card-badge { font-size:8px;letter-spacing:1.2px;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid;line-height:1.4; }
+.fp-badge-active { color:#6b9fff;border-color:rgba(107,159,255,0.25);background:rgba(107,159,255,0.06); }
+.fp-badge-building { color:var(--amber);border-color:rgba(232,160,69,0.25);background:rgba(232,160,69,0.06); }
+.fp-card-name { font-size:16px;font-weight:650;color:var(--text);letter-spacing:-0.02em;line-height:1.2; }
+.fp-card-tag { font-size:12px;color:var(--text-3);line-height:1.5;flex:1; }
+
+/* Per-project accent colors */
+.fp-perfeat .fp-card-accent { background:linear-gradient(90deg,#60a5fa,#3b82f6); }
+.fp-perfeat:hover { border-color:#60a5fa; }
+.fp-wecare .fp-card-accent { background:linear-gradient(90deg,#f472b6,#ec4899); }
+.fp-wecare:hover { border-color:#f472b6; }
+.fp-os-v1 .fp-card-accent { background:linear-gradient(90deg,var(--amber),var(--amber-dim)); }
+.fp-os-v1:hover { border-color:var(--amber); }
 
 /* ── PROJECTS PAGE ── */
 .projects-list { display:flex;flex-direction:column;gap:14px;margin-bottom:28px; }
@@ -1056,6 +1068,10 @@ a { text-decoration: none; color: inherit; }
   .dash-sidebar { width:100%;border-top:1px solid var(--border);padding-top:24px; }
   .hero { flex-direction:column; }
   .hero-right { width:100%; }
+  .fp-cards { grid-template-columns:1fr; }
+}
+@media(max-width:1100px){
+  .fp-cards { grid-template-columns:1fr 1fr; }
 }
 @media(max-width:600px){
   .nav { padding:0 16px; }

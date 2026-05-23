@@ -67,19 +67,27 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
       </section>
 
       <!-- FEATURED PROJECTS -->
-      <div class="fp-bar">
-        <span class="mono fp-bar-label">projects</span>
-        <div class="fp-bar-list">
+      <section class="fp-section">
+        <div class="fp-hd">
+          <span class="mono fp-hd-label">featured projects</span>
+          <a href="/projects" class="mono fp-hd-all">view all →</a>
+        </div>
+        <div class="fp-cards">
           {activeProjects.map(p => (
-            <a href={p.url || '/projects'} class="fp-bar-item">
-              <span class="fp-bar-emoji">{p.emoji}</span>
-              <span class="fp-bar-name">{p.name}</span>
-              <span class:list={['mono', 'fp-bar-status', `fp-bar-${p.status}`]}>{p.status}</span>
+            <a href={p.url || '/projects'} class:list={['fp-card', `fp-${p.slug}`]}>
+              <div class="fp-card-accent"></div>
+              <div class="fp-card-body">
+                <div class="fp-card-top">
+                  <span class="fp-card-emoji">{p.emoji}</span>
+                  <span class:list={['mono', 'fp-card-badge', `fp-badge-${p.status}`]}>{p.status}</span>
+                </div>
+                <div class="fp-card-name">{p.name}</div>
+                <div class="fp-card-tag">{p.tagline}</div>
+              </div>
             </a>
           ))}
         </div>
-        <a href="/projects" class="mono fp-bar-all">→</a>
-      </div>
+      </section>
 
       <!-- TABS -->
       <div class="tab-strip" id="tabs">
