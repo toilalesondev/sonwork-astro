@@ -487,17 +487,17 @@ import Nav from '../components/Nav.astro';
 
 <script>
   // ── Graph canvas ──────────────────────────────────────────────────────────
-  const canvas = document.getElementById('graphCanvas');
+  const canvas = document.getElementById('graphCanvas') as HTMLCanvasElement | null;
   const tooltip = document.getElementById('graphTooltip');
-  if (canvas) {
+  if (canvas && tooltip) {
     const ctx = canvas.getContext('2d');
-    const W = canvas.parentElement.offsetWidth;
+    const W = canvas.parentElement?.offsetWidth ?? canvas.clientWidth;
     const H = 360;
     canvas.width = W;
     canvas.height = H;
 
     // Pull palette tokens from global.css :root so canvas colors stay in sync.
-    const cssVar = (name, fallback) =>
+    const cssVar = (name: string, fallback: string) =>
       getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
     const AMBER = cssVar('--amber', '#e8a045');
     const BG = cssVar('--bg', '#0a0a0a');
@@ -530,12 +530,14 @@ import Nav from '../components/Nav.astro';
       { from:'robin',    to:'aurelius', w:1 },
     ];
 
-    function draw(hoverId) {
+    function draw(hoverId: string | null) {
+      if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
       // edges
       edges.forEach(e => {
         const a = nodes.find(n=>n.id===e.from);
         const b = nodes.find(n=>n.id===e.to);
+        if (!a || !b) return;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
@@ -565,11 +567,11 @@ import Nav from '../components/Nav.astro';
       const rect = canvas.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
-      let hit = null;
-      nodes.forEach(n => {
+      let hit: typeof nodes[number] | null = null;
+      for (const n of nodes) {
         const d = Math.hypot(mx-n.x, my-n.y);
         if (d < n.r + 8) hit = n;
-      });
+      }
       draw(hit?.id || null);
       if (hit) {
         tooltip.style.display = 'block';
