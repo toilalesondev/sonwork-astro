@@ -17,16 +17,12 @@ production CSS bug fixed. Keep Sơn's identity; keep the Command Center design s
 - **Verified audit** (`UNDERSTANDING.md`) + **foundation plan** (`RESTRUCTURE_PLAN.md`).
 - **Phase 0–1:** foundation docs (CONTEXT, ADR 0001–0003, docs/agents, process scaffold, README).
 
-## In progress (this pass — phase-by-phase)
+## Shipped ✅ (2026-05-30)
 
-- Phase 2: fix CSS bug (import `src/styles/global.css`, delete `public/` copy).
-- Phase 2.5: strip content to skeleton (1 sample post, 1 sample project).
-- Phase 3: extract `seriesMap` → `src/data/series.ts`.
-- Phase 4: resolve page/asset shadows.
-- Phase 5: consistency + DX (tokens, nav doc, `astro check`, dead indirection).
-- Phase 5.5: `@ive` design pass + DESIGN.md documentation verification.
-- Phase 6: seed memory (brv + gbrain).
-- Phase 7: build on Node ≥22, design-review, PR, ship (deferred to Node-22 env).
+- PR #1 **MERGED** to `main` (merge commit `f944e80`). Branch deleted.
+- Cloudflare Pages auto-deployed. **Live verified:** sonwork.org/projects serves the bundled `/_astro/Nav.*.css` containing `.fp-card` + `.project-card` — the previously-unstyled pages are now styled in production. CSS bug fixed end-to-end.
+- All phases done: CSS fix, skeleton, series.ts, shadows, DX (`astro check` 0 errors), @ive design pass, memory seeded, build green on Node 22.
+- Minor leftover (harmless): old `/styles/global.css` URL still 200s from a prior Cloudflare deploy cache; nothing references it.
 
 ## Environment (resolved)
 
