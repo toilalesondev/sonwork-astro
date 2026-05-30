@@ -57,7 +57,7 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
         </div>
         <div class="fp-cards">
           {activeProjects.map(p => (
-            <a href={p.url || '/projects'} class:list={['fp-card', `fp-${p.slug}`]}>
+            <a href="/projects" class:list={['fp-card', `fp-${p.slug}`]}>
               <div class="fp-card-accent"></div>
               <div class="fp-card-body">
                 <div class="fp-card-top">
