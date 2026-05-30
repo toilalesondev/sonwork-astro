@@ -20,14 +20,14 @@ export const projects: Project[] = [
   {
     slug: 'perfeat',
     name: 'Perfeat',
-    tagline: 'AI evaluation infrastructure',
-    description: 'Co-founder. Building the evaluation layer for the AI stack — where models get measured, compared, and certified before they touch production.',
+    tagline: 'Personal food diary',
+    description: 'Founder. A private, editorial food diary — rate every meal 1–7, log dish, restaurant, companions, price, and a photo. Turns your eating history into a searchable personal taste library.',
     status: 'active',
-    emoji: '📐',
+    emoji: '🍜',
     highlights: [
-      'LLM eval harness for production-grade testing',
-      'Fine-tuning and RLHF pipeline infrastructure',
-      'Custom benchmarking suites for enterprise',
+      'Rate meals 1–7 and log dish, place, price, photo',
+      'Top-moments montage — your best meals as shareable cards',
+      'TestFlight v1.0 — in App Store review',
     ],
   },
 ];
