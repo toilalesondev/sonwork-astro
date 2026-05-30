@@ -20,7 +20,7 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
 
     <!-- WHO -->
     <section class="hero">
-      <div class="hero-prompt mono text-3">./introduction</div>
+      <div class="hero-prompt mono"><span class="hero-prompt-caret accent">&#62;</span> <span class="text-3">./introduction</span></div>
       <h1 class="hero-name">Sơn Lê</h1>
       <p class="hero-hook">
         Still learning. Writing it down as I go.<span class="cursor">▊</span>
@@ -44,7 +44,7 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
         <a href="/projects" class="btn-ghost">See projects</a>
       </div>
       <div class="hero-meta mono text-3">
-        {allPosts.length} posts · 3 series · {totalReadTime} min of reading
+        <span class="accent">{allPosts.length}</span> posts · <span class="accent">3</span> series · <span class="accent">{totalReadTime}</span> min of reading
       </div>
     </section>
 
