@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import { getCollection } from 'astro:content';
 import { projects } from '../data/projects';
-import { seriesMeta, seriesKeys } from '../data/series';
+import { seriesMeta } from '../data/series';
 
 const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -11,63 +11,49 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft))
 const activeProjects = projects.filter(p => p.status === 'active' || p.status === 'building');
 
 const seriesMap = seriesMeta;
-
-const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
-const seriesCounts = Object.fromEntries(
-  seriesKeys.map(s => [s, allPosts.filter(p => p.data.series === s).length])
-);
 const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime), 0);
 ---
 <Base>
   <Nav active="dashboard" />
 
-  <div class="dashboard-wrap">
-    <main class="dash-main">
+  <main class="home">
 
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero-left">
-          <div class="hero-prompt"><span class="mono text-3">./introduction</span></div>
-          <div class="hero-avatar">SL</div>
-          <h1 class="hero-name">Sơn Lê</h1>
-          <div class="hero-hook">
-            I've sat on both sides of the table. Neither was comfortable.<span class="cursor">▊</span>
-          </div>
-          <div class="hero-roles">
-            <span class="role-item">VC</span>
-            <span class="role-sep mono">→</span>
-            <span class="role-item">Operator</span>
-            <span class="role-sep mono">→</span>
-            <span class="role-item active">Builder</span>
-          </div>
-          <div class="hero-company mono text-3">
-            Co-founder, <a href="https://perfeat.org" target="_blank" rel="noopener" class="amber-link">Perfeat.org ↗</a>
-          </div>
-          <p class="hero-bio">
-            Spent years writing checks, then years cashing out reputation. Now I build things in Saigon and write about what I notice.
-          </p>
-          <div class="hero-ctas">
-            <a href="/projects" class="btn-primary">See projects</a>
-            <a href="/series" class="btn-ghost">Read the writing</a>
-            <a href="/about" class="btn-ghost">About me</a>
-          </div>
-        </div>
-        <div class="hero-right">
-          <div class="stats-card">
-            <div class="stats-label mono">STATS</div>
-            <div class="stat-row"><span class="mono text-3">posts_written</span><span class="mono amber">{allPosts.length}</span></div>
-            <div class="stat-row"><span class="mono text-3">series</span><span class="mono amber">3</span></div>
-            <div class="stat-row"><span class="mono text-3">years_logged</span><span class="mono amber">1</span></div>
-            <div class="stat-row"><span class="mono text-3">est_read_time</span><span class="mono amber">{totalReadTime} min</span></div>
-          </div>
-        </div>
-      </section>
+    <!-- WHO -->
+    <section class="hero">
+      <div class="hero-prompt mono text-3">./introduction</div>
+      <h1 class="hero-name">Sơn Lê</h1>
+      <p class="hero-hook">
+        I've sat on both sides of the table. Neither was comfortable.<span class="cursor">▊</span>
+      </p>
+      <div class="hero-roles">
+        <span class="role-item">VC</span>
+        <span class="role-sep mono">→</span>
+        <span class="role-item">Operator</span>
+        <span class="role-sep mono">→</span>
+        <span class="role-item active">Builder</span>
+        <span class="hero-company mono text-3">
+          · Co-founder, <a href="https://perfeat.org" target="_blank" rel="noopener" class="amber-link">Perfeat.org ↗</a>
+        </span>
+      </div>
+      <p class="hero-bio">
+        Spent years writing checks, then years cashing out reputation. Now I build things in
+        Saigon and write about what I notice.
+      </p>
+      <div class="hero-ctas">
+        <a href="/series" class="btn-primary">Read the writing</a>
+        <a href="/projects" class="btn-ghost">See projects</a>
+      </div>
+      <div class="hero-meta mono text-3">
+        {allPosts.length} posts · 3 series · {totalReadTime} min of reading
+      </div>
+    </section>
 
-      <!-- FEATURED PROJECTS -->
-      <section class="fp-section">
-        <div class="fp-hd">
-          <span class="mono fp-hd-label">featured projects</span>
-          <a href="/projects" class="mono fp-hd-all">view all →</a>
+    <!-- WHAT I'M BUILDING -->
+    {activeProjects.length > 0 && (
+      <section class="home-section">
+        <div class="section-hd">
+          <h2 class="section-title mono">Building</h2>
+          <a href="/projects" class="section-all mono">all projects →</a>
         </div>
         <div class="fp-cards">
           {activeProjects.map(p => (
@@ -85,8 +71,15 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
           ))}
         </div>
       </section>
+    )}
 
-      <!-- TABS -->
+    <!-- WRITING -->
+    <section class="home-section">
+      <div class="section-hd">
+        <h2 class="section-title mono">Writing</h2>
+        <a href="/series" class="section-all mono">by series →</a>
+      </div>
+
       <div class="tab-strip" id="tabs">
         <button class="tab active" data-series="all">All</button>
         {Object.entries(seriesMap).map(([key, s]) => (
@@ -96,32 +89,15 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
         ))}
       </div>
 
-      <!-- ACTIVE TAG BAR -->
-      <div id="activeTagBar" class="active-tag-bar" style="display:none">
-        <span class="mono text-3">filtering:</span>
-        <span class="mono amber" id="activeTagLabel"></span>
-        <button class="clear-tag" id="clearTagBtn">× clear</button>
-      </div>
-
-      <!-- POST FEED -->
       <div class="post-feed" id="postFeed">
         {allPosts.map(post => {
           const s = seriesMap[post.data.series];
           return (
             <a href={`/posts/${post.id}`}
                class="post-row"
-               data-series={post.data.series}
-               data-tags={post.data.tags.join(',')}>
+               data-series={post.data.series}>
               <span class={`post-marker mono ${s.badgeClass}`}>{s.marker}</span>
-              <div class="post-middle">
-                <span class="post-title">{post.data.title}</span>
-                <div class="post-tags">
-                  {post.data.tags.map(tag => (
-                    <button class="tag-chip mono" data-tag={tag}
-                      onclick={`event.preventDefault();event.stopPropagation();filterTag('${tag}')`}>[{tag}]</button>
-                  ))}
-                </div>
-              </div>
+              <span class="post-title">{post.data.title}</span>
               <span class="post-date mono text-3">
                 {post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
               </span>
@@ -129,95 +105,21 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
           );
         })}
       </div>
+    </section>
 
-    </main>
-
-    <!-- SIDEBAR -->
-    <aside class="dash-sidebar">
-      <div class="sidebar-block">
-        <div class="sidebar-hd mono">SERIES</div>
-        {Object.entries(seriesMap).map(([key, s]) => (
-          <a href="/series" class="sb-series-row">
-            <span class="mono amber">{s.marker}</span>
-            <span class="sb-name">{s.name}</span>
-            <span class="mono text-3">{seriesCounts[key]}</span>
-          </a>
-        ))}
-      </div>
-      <div class="sidebar-block">
-        <div class="sidebar-hd mono">PROJECTS</div>
-        {activeProjects.map(p => (
-          <a href={p.url || '/projects'} class="sb-series-row">
-            <span class="mono amber">{p.emoji}</span>
-            <span class="sb-name">{p.name}</span>
-            <span class:list={['mono', 'text-3', `sidebar-status-${p.status}`]}>{p.status}</span>
-          </a>
-        ))}
-      </div>
-      <div class="sidebar-block">
-        <div class="sidebar-hd mono">TOPICS</div>
-        <div class="tag-cloud">
-          {allTags.map(tag => (
-            <button class="tag-chip mono sidebar-tag" data-tag={tag}
-              onclick={`filterTag('${tag}')`}>[{tag}]</button>
-          ))}
-        </div>
-      </div>
-      <div class="sidebar-about mono text-3">
-        Sơn Lê — VC, then operator, now builder. Writing to stay honest.
-      </div>
-    </aside>
-  </div>
+  </main>
 
   <script>
-    // Window augmentation for the inline filter handlers (used by onclick attrs).
-    declare global {
-      interface Window {
-        filterTag: (tag: string) => void;
-        clearTag: () => void;
-      }
-    }
-
-    // Tab filtering
+    // Series tab filtering — the single, meaningful filter axis for the feed.
     document.querySelectorAll<HTMLElement>('.tab').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const series = btn.dataset.series;
-        clearTagSilent();
         document.querySelectorAll<HTMLElement>('.post-row').forEach(row => {
           row.style.display = (series === 'all' || row.dataset.series === series) ? 'flex' : 'none';
         });
       });
     });
-
-    // Tag filtering
-    let activeTag: string | null = null;
-    window.filterTag = function(tag: string) {
-      if (activeTag === tag) { window.clearTag(); return; }
-      activeTag = tag;
-      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-      document.querySelector('.tab[data-series="all"]')?.classList.add('active');
-      document.querySelectorAll<HTMLElement>('.post-row').forEach(row => {
-        const tags = (row.dataset.tags || '').split(',');
-        row.style.display = tags.includes(tag) ? 'flex' : 'none';
-      });
-      document.querySelectorAll<HTMLElement>('.tag-chip').forEach(c => c.classList.toggle('active', c.dataset.tag === tag));
-      const bar = document.getElementById('activeTagBar');
-      if (bar) bar.style.display = 'flex';
-      const label = document.getElementById('activeTagLabel');
-      if (label) label.textContent = tag;
-    };
-    window.clearTag = function() {
-      clearTagSilent();
-      document.querySelectorAll<HTMLElement>('.post-row').forEach(r => r.style.display = 'flex');
-    };
-    function clearTagSilent() {
-      activeTag = null;
-      document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('active'));
-      const bar = document.getElementById('activeTagBar');
-      if (bar) bar.style.display = 'none';
-    }
-    document.getElementById('clearTagBtn')?.addEventListener('click', () => window.clearTag());
   </script>
 </Base>
