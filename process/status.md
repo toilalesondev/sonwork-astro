@@ -28,9 +28,10 @@ production CSS bug fixed. Keep Sơn's identity; keep the Command Center design s
 - Phase 6: seed memory (brv + gbrain).
 - Phase 7: build on Node ≥22, design-review, PR, ship (deferred to Node-22 env).
 
-## Blocked / environment
+## Environment (resolved)
 
-- **Node ≥22 required** to build. This machine is Node v20.20.2 → `astro build` fails. Final build/ship deferred to a Node-22 environment (CI or upgraded local).
+- **Node 22 installed** (v22.22.3 via `n`, 2026-05-30). `npm run check` passes clean (0 errors) and `npm run build` is green (10 pages, global CSS bundled with the restored selectors). The CSS production-bug fix is verified end-to-end.
+- CI/deploy should pin Node ≥22 (`package.json` engines already enforce it).
 
 ## Next actions (backlog after skeleton)
 
