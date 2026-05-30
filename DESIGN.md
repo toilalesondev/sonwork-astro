@@ -146,6 +146,17 @@ Prefer dashboard structure over brochure sections. On desktop, a common layout i
 
 Mobile should collapse to one column below roughly `800px`. Preserve readable spacing, but keep the dense command-center feeling.
 
+### Density (minimal pass, 2026-05)
+
+The command-center soul is *compact and quiet*, not *packed*. Dense ≠ cluttered. When a surface starts to feel busy, the fix is to **remove duplicated information**, not to shrink type.
+
+- **The homepage is a single centered column (~760px), not a dashboard + sidebar.** The old right sidebar duplicated what the page already showed (series → tabs, projects → featured cards, topics → per-post tags, bio → hero). Duplication is the primary noise source; cut it before anything else.
+- **One filter axis per feed.** The post feed filters by **series tabs** only. The parallel tag-filter system (per-row tag chips + a topic tag cloud + an active-tag bar) was a second competing filter that added chrome to every row; it was removed. Tags still live on the post page and the writing page.
+- **Three clear things on the home surface:** who (hero), what I'm building (featured projects), what I'm writing (feed). Each section gets real vertical air (`margin-top: 64px`, hero padding `56px` top). Generous whitespace is on-brand here; minimal is intentional, not empty.
+- **Two CTAs max** in the hero, not three. One primary (amber), one ghost.
+- Stats are a single quiet mono line under the hero (`{n} posts · 3 series · {n} min`), not a competing bordered card in a right rail.
+- Section headers use a quiet uppercase mono label (`.section-title`) + a muted "all →" link (`.section-all`), replacing the heavier per-section header treatments.
+
 ## Elevation & Depth
 
 Depth is mostly created with contrast, borders, and spacing - not shadows. The current site uses flat near-black surfaces and subtle borders. Avoid heavy drop shadows, glassmorphism, blurred pastel cards, or big layered panels.
