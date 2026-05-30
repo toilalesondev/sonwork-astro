@@ -1,21 +1,22 @@
 ---
-title: "2026 — Year one"
-description: "The first entry. What it actually felt like to be alive at this age."
+title: "Sample — Life Book entry"
+description: "A placeholder life-book post. Replace with a real year-in-review entry."
 pubDate: 2026-05-17
 series: "life-book"
-tags: ["life", "memoir", "2026"]
-readTime: "4 min"
+tags: ["sample", "life-book"]
+readTime: "2 min"
 emoji: "📖"
+draft: false
 ---
 
-I'm starting this because I want to remember. Not the events — those I can look up. I want to remember what it *felt* like.
+This is a **sample post** in the `life-book` series. Use it as a template — duplicate this file, change the frontmatter, and write your entry.
 
-VC, then operator, now builder. Each shift felt obvious in the moment and strange in retrospect. That's probably how it always works.
+> Life Book entries are year-by-year, written as they happen, compiled into a physical book at 50. "Not memoir — evidence."
 
-> The plan: one entry per year, minimum. Longer if something happened worth writing about. Compile it into a book when I'm fifty.
+## How to use this
 
-## Why a book?
+1. Copy this file in `src/content/posts/`.
+2. Set `title`, `description`, `pubDate`, `series`, `tags`, `readTime`, `emoji`.
+3. Write the body in Markdown. The first paragraph gets a drop-cap automatically.
 
-Because a blog disappears. A book stays. I want something I can hand to someone — or just read alone at fifty and feel the distance between who I was and who I became.
-
-This is year one. Not much to show yet. But the point is to start.
+Delete this sample once you have real entries.

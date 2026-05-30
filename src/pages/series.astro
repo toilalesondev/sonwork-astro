@@ -2,15 +2,12 @@
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import { getCollection } from 'astro:content';
+import { seriesMeta } from '../data/series';
 
 const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const seriesMap: Record<string, {name:string, marker:string, badgeClass:string, desc:string, tagline:string}> = {
-  'life-book':   { name:'Life Book',   marker:'§',  badgeClass:'badge-life',  tagline:'One year at a time, until there are fifty.', desc:'Year-by-year entries written as they happen, compiled into a physical book at 50. Not memoir — evidence.' },
-  'experiences': { name:'Experiences', marker:'↳', badgeClass:'badge-exp',   tagline:'Things I lived through, written before I rewrite them in my head.', desc:'Not advice. Not lessons. Accounts of specific situations that were real enough to leave a mark.' },
-  'human':       { name:'Human',       marker:'◎', badgeClass:'badge-human', tagline:'Psychology without the jargon. People without the flattery.', desc:'How people think, decide, break, and convince themselves they didn\'t. More useful than most frameworks.' },
-};
+const seriesMap = seriesMeta;
 ---
 <Base title="Writing — Sơn Lê">
   <Nav active="writing" />

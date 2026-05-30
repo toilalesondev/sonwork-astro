@@ -5,6 +5,10 @@ interface Props {
 
 const { active } = Astro.props;
 
+// Main nav links. NOTE: /os-v1 and /gbrain routes exist but are intentionally
+// NOT listed here — they are direct-link / sidebar-only pages (see CONTEXT.md
+// "Routing note"). The `active` prop still accepts 'gbrain' so those pages can
+// mark themselves active if linked from elsewhere.
 const links: { href: string; label: string; id: Props['active'] }[] = [
   { href: '/', label: 'Dashboard', id: 'dashboard' },
   { href: '/series', label: 'Writing', id: 'writing' },

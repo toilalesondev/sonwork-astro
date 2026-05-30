@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
-import { projects, statusLabels } from '../data/projects';
+import { projects } from '../data/projects';
 ---
 
 <Base title="Projects — Sơn Lê">
@@ -21,7 +21,7 @@ import { projects, statusLabels } from '../data/projects';
               <div class="project-name">{p.name}</div>
               <div class="project-tagline mono text-3">{p.tagline}</div>
             </div>
-            <span class:list={['project-status', `status-${p.status}`, 'mono']}>{statusLabels[p.status]}</span>
+            <span class:list={['project-status', `status-${p.status}`, 'mono']}>{p.status}</span>
             {p.url && <span class="mono text-3 project-arrow">↗</span>}
           </div>
           <p class="project-desc">{p.description}</p>

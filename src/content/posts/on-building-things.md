@@ -1,21 +1,20 @@
 ---
-title: "On building things from nothing"
-description: "Starting from zero — the part nobody writes about because it's not a good story yet."
+title: "Sample — Experiences entry"
+description: "A placeholder experiences post. Replace with a real account."
 pubDate: 2026-04-03
 series: "experiences"
-tags: ["building", "startup", "founder"]
-readTime: "6 min"
+tags: ["sample", "experiences"]
+readTime: "2 min"
 emoji: "🛠️"
+draft: false
 ---
 
-What it actually feels like to start from zero — the part nobody writes about because it's not a good story yet.
+This is a **sample post** in the `experiences` series. Use it as a template.
 
-Everyone shares the after. The launch, the milestone, the round. Nobody writes the middle — the part where you don't know if it's working, where you second-guess every call, where "building" mostly means sitting with uncertainty.
+> Experiences are accounts of specific real situations. "Not advice. Not lessons." — just what actually happened.
 
-> Starting from nothing is less dramatic than it sounds. It's mostly just doing the next thing.
+## How to use this
 
-## The real work
+Duplicate this file, update the frontmatter (keep `series: "experiences"`), and write the account in Markdown. Blockquotes render with an amber left bar; `## headings` style automatically.
 
-The real work isn't the product. It's convincing yourself every morning that the thing you're building is worth building. Some days that's easy. Most days it isn't.
-
-That's the part I want to write about. The unglamorous middle.
+Delete this sample once you have real entries.

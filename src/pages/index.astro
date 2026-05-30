@@ -3,21 +3,18 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import { getCollection } from 'astro:content';
 import { projects } from '../data/projects';
+import { seriesMeta, seriesKeys } from '../data/series';
 
 const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const activeProjects = projects.filter(p => p.status === 'active' || p.status === 'building');
 
-const seriesMap: Record<string, {name:string, marker:string, color:string, badgeClass:string, desc:string}> = {
-  'life-book':   { name:'Life Book',   marker:'§',  color:'#1a3a6b', badgeClass:'badge-life', desc:'Year-by-year entries written as they happen, compiled into a physical book at 50. Not memoir — evidence.' },
-  'experiences': { name:'Experiences', marker:'↳', color:'#7c3a00', badgeClass:'badge-exp',  desc:'Not advice. Not lessons. Accounts of specific situations that were real enough to leave a mark.' },
-  'human':       { name:'Human',       marker:'◎', color:'#4a1a3a', badgeClass:'badge-human',desc:'How people think, decide, break, and convince themselves they didn\'t. More useful than most frameworks.' },
-};
+const seriesMap = seriesMeta;
 
 const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
 const seriesCounts = Object.fromEntries(
-  Object.keys(seriesMap).map(s => [s, allPosts.filter(p => p.data.series === s).length])
+  seriesKeys.map(s => [s, allPosts.filter(p => p.data.series === s).length])
 );
 const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime), 0);
 ---
