@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import { getCollection, render } from 'astro:content';
+import { seriesMeta } from '../../data/series';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({data}) => !data.draft);
@@ -11,12 +12,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-const seriesMap: Record<string, {name:string, marker:string, badgeClass:string}> = {
-  'life-book':   { name:'Life Book',   marker:'§',  badgeClass:'badge-life' },
-  'experiences': { name:'Experiences', marker:'↳', badgeClass:'badge-exp' },
-  'human':       { name:'Human',       marker:'◎', badgeClass:'badge-human' },
-};
-const s = seriesMap[post.data.series];
+const s = seriesMeta[post.data.series];
 ---
 <Base title={`${post.data.title} — Sơn Lê`} description={post.data.description}>
   <Nav active="writing" />

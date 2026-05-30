@@ -1,43 +1,60 @@
-# Astro Starter Kit: Minimal
+# sonwork.org
 
-```sh
-npm create astro@latest -- --template minimal
+Sơn Lê's personal blog — a static **Astro** site with a dark, personal "operating-system" aesthetic. Maintained as a clean, reusable skeleton: **blog** (essays organized into series) + **projects** + **personal** pages. Design *is* the product.
+
+> **Agents & contributors:** start with `CONTEXT.md` (what this is + vocabulary), then `AGENTS.md` (workflow + ownership), then `DESIGN.md` (visual canon). Decisions are in `docs/adr/`; the verified audit in `UNDERSTANDING.md`.
+
+## Stack
+
+Astro 6 (static) · TypeScript (strict) · content collections for posts · `@astrojs/sitemap` · Inter + JetBrains Mono · **Node ≥22.12 (required)**.
+
+## Commands
+
+```bash
+npm install
+npm run dev       # local dev server with HMR
+npm run build     # production build to ./dist/  (Node ≥22; run before every push)
+npm run preview   # preview the production build locally
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Structure
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+src/
+  layouts/Base.astro       the only layout (imports global.css)
+  components/Nav.astro     the only component
+  content.config.ts        posts collection schema (series enum)
+  content/posts/*.md       the writing (slug = filename)
+  data/projects.ts         projects (TS array — ADR-0001)
+  data/series.ts           series metadata (single source — ADR-0003)
+  pages/                   file-based routes
+  styles/global.css        the canonical stylesheet (imported — ADR-0002)
+public/                    static assets + standalone HTML artifacts (not routes)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+See `CONTEXT.md` for the full map and `process/status.md` for what's next.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Writing a post
 
-Any static assets, like images, can be placed in the `public/` directory.
+Add a markdown file to `src/content/posts/`. Frontmatter:
 
-## 🧞 Commands
+```yaml
+---
+title: "Title"
+description: "Optional one-liner"
+pubDate: 2026-05-30
+series: "life-book"        # life-book | experiences | human
+tags: ["life", "2026"]
+readTime: "4 min"
+emoji: "📖"
+draft: false
+---
+```
 
-All commands are run from the root of the project, from a terminal:
+## Adding a project
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Append to the array in `src/data/projects.ts` (typed by the `Project` interface).
 
-## 👀 Want to learn more?
+## Contributing
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Never push to `main`. Branch → `npm run build` (Node ≥22) → PR → merge → deploy. See `AGENTS.md`.

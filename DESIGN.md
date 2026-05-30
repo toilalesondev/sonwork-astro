@@ -188,3 +188,62 @@ Don't:
 - Use more than one strong accent color.
 - Over-animate; motion should be quick and functional.
 - Publish one-off visual systems that make `sonwork.org` feel inconsistent.
+
+## Implementation (where the tokens live)
+
+The frontmatter above is the **canonical token spec**. In the Astro site those tokens
+are implemented as CSS custom properties in **`src/styles/global.css`** under `:root`,
+imported once by **`src/layouts/Base.astro`** (`import '../styles/global.css'`). Every page
+that renders through `Base.astro` (all of them) inherits the `:root` vars globally — including
+inside a page's scoped `<style>` block. So `var(--amber)` etc. resolve in any `.astro` page
+that uses the shared layout. A page that does NOT use `Base.astro` must import `global.css`
+itself (or define its own `:root`) or the vars will not resolve.
+
+### Color tokens → CSS vars
+
+| Token (frontmatter) | CSS var | Notes |
+|---|---|---|
+| bg, bg-2 … bg-5 | `--bg`, `--bg-2` … `--bg-5` | step-up surfaces |
+| border, border-2 | `--border`, `--border-2` | thin dividers |
+| text, text-2, text-3 | `--text`, `--text-2`, `--text-3` | copy → metadata |
+| amber, amber-dim | `--amber`, `--amber-dim` | accent + hover border |
+| black, white | `--black`, `--white` | black = text on amber fill; white = rare hover emphasis only |
+
+`primary` / `secondary` / `tertiary` / `neutral` in the frontmatter are **semantic aliases**
+for `bg` / `text` / `amber` / `text-2` (kept for tooling); they are not separate CSS vars.
+
+### Implementation-only tokens (in CSS, not in the frontmatter palette)
+
+These exist in `global.css` because they're derived from the palette, not new colors:
+
+- `--amber-hover: #d4913e` — the amber **fill** hover for `.btn-primary` / `.form-submit`
+  (distinct from `--amber-dim`, which is the amber **border** hover).
+- `--amber-bg: rgba(232,160,69,0.08)` and `--amber-bg2: rgba(232,160,69,0.14)` — amber tints
+  for chip/pill backgrounds and active-state backgrounds.
+- `--mono` / `--sans` — the JetBrains Mono / Inter font stacks.
+- `--radius: 4px` — equals `rounded.sm`; the default radius var used across components.
+- `--nav-h: 52px` — equals `components.nav.height`.
+
+The `typography`, `spacing`, and `rounded` scales in the frontmatter are the **spec**; in CSS
+they are currently applied as literal values per component (only `--radius` and `--nav-h` are
+vars today). When adding new components, follow the frontmatter scale.
+
+### Non-palette accent colors (intentional one-offs)
+
+A few surfaces use small fixed accent colors that are **deliberately outside** the Command
+Center palette and must not be "corrected" to amber:
+
+- **Series identity** (`badge-life`, `badge-exp`, `badge-human`) — muted blue / orange / violet
+  markers distinguishing the three writing series.
+- **Project status** (`status-active`, `fp-badge-active`, status dots) — blue = active, amber =
+  building, gray = parked.
+- **Per-project featured-card accents** (`.fp-<slug>`) — optional bespoke gradient per project.
+  A project without an `.fp-<slug>` rule falls back to the default amber accent on
+  `.fp-card-accent` — this is intended, so generic/new projects still show an accent.
+- **gbrain agent colors** (`/gbrain` page) — a 7-color per-agent palette (shared=amber,
+  robin=blue, karpathy=green, etc.) shared across that page's diagram, source list, graph
+  legend, link matrix, and the knowledge-graph `<canvas>`. These are one-offs scoped to the
+  brain visualization; leave them as hex and keep the agent set consistent.
+
+When introducing any new non-palette accent, validate text contrast on the dark surface
+(body ≥ 4.5:1) before shipping.
