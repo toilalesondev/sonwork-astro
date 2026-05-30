@@ -19,10 +19,18 @@ production CSS bug fixed. Keep Sơn's identity; keep the Command Center design s
 
 ## Shipped ✅ (2026-05-30)
 
-- PR #1 **MERGED** to `main` (merge commit `f944e80`). Branch deleted.
-- Cloudflare Pages auto-deployed. **Live verified:** sonwork.org/projects serves the bundled `/_astro/Nav.*.css` containing `.fp-card` + `.project-card` — the previously-unstyled pages are now styled in production. CSS bug fixed end-to-end.
-- All phases done: CSS fix, skeleton, series.ts, shadows, DX (`astro check` 0 errors), @ive design pass, memory seeded, build green on Node 22.
-- Minor leftover (harmless): old `/styles/global.css` URL still 200s from a prior Cloudflare deploy cache; nothing references it.
+**Restructure — PR #1 MERGED** (`f944e80`):
+- CSS production bug fixed end-to-end (live `/projects` styled), skeleton, series.ts, shadows, DX (`astro check` 0 errors), @ive design pass, memory seeded, build green on Node 22.
+
+**Minimal design pass — PR #2 MERGED** (`663544f`, @ive):
+- Contact email → `tuanson.le03@gmail.com` (live, Cloudflare email-obfuscated).
+- Nav → three items: Writing · Projects · About (brand logo = home).
+- Contact folded into About; standalone `/contact` page deleted from source.
+- Homepage minimalized: single calm column, sidebar + duplicate filters/stats removed (−329 lines). **Live verified:** no sidebar, new nav, new email.
+
+## Known harmless leftovers (Cloudflare edge)
+
+- Old `/styles/global.css` and `/contact` URLs still return 200 from prior Cloudflare Pages deployments. Neither is referenced or linked anywhere (nav no longer has Contact; site uses the hashed bundled CSS). They're orphan assets, not functional issues. Clear via a Cloudflare cache purge / full redeploy if desired.
 
 ## Environment (resolved)
 
