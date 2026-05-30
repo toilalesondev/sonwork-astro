@@ -13,23 +13,22 @@ export interface Project {
   highlights: string[];
 }
 
-// SKELETON: one sample project. Duplicate this object, change the fields, and add
-// real projects. For a custom accent color on the homepage featured card, add a
+// Real projects. For a custom accent color on the homepage featured card, add a
 // `.fp-<slug>` rule in src/styles/global.css (see "Per-project accent colors").
-// Without one, the card uses the default amber accent (`.fp-card-accent` base).
+// Without one, the card uses the default blue accent (`.fp-card-accent` base).
 export const projects: Project[] = [
   {
-    slug: 'sample-project',
-    name: 'Sample Project',
-    tagline: 'A placeholder project',
-    description: 'This is a sample entry that demonstrates the project card structure. Replace it with a real project — set the slug, name, tagline, description, status, optional url, emoji, and highlights.',
-    status: 'building',
-    url: '/',
-    emoji: '🧩',
+    slug: 'perfeat',
+    name: 'Perfeat',
+    tagline: 'AI evaluation infrastructure',
+    description: 'Co-founder. Building the evaluation layer for the AI stack — where models get measured, compared, and certified before they touch production.',
+    status: 'active',
+    url: 'https://perfeat.org',
+    emoji: '📐',
     highlights: [
-      'Highlight one — what this project does',
-      'Highlight two — a key capability',
-      'Highlight three — current focus',
+      'LLM eval harness for production-grade testing',
+      'Fine-tuning and RLHF pipeline infrastructure',
+      'Custom benchmarking suites for enterprise',
     ],
   },
 ];

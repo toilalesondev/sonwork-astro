@@ -103,10 +103,10 @@ import Nav from '../components/Nav.astro';
       <h2 class="os-h2">Portfolio management</h2>
       <p>Every venture is tracked in the Company OS portfolio with status, progress metrics, and automated triage. Cron-driven heartbeat keeps everything current:</p>
       <div class="os-cron-grid">
-        <div class="os-cron-item"><span class="mono amber">07:30</span><span class="cron-label">daily triage</span><span class="cron-desc mono muted">checks every venture's pulse</span></div>
-        <div class="os-cron-item"><span class="mono amber">20:00 Sun</span><span class="cron-label">weekly review</span><span class="cron-desc mono muted">portfolio-level assessment</span></div>
-        <div class="os-cron-item"><span class="mono amber">every 6h</span><span class="cron-label">dashboard refresh</span><span class="cron-desc mono muted">live portfolio data</span></div>
-        <div class="os-cron-item"><span class="mono amber">02:00</span><span class="cron-label">agent dream cycle</span><span class="cron-desc mono muted">each agent's autopilot runs</span></div>
+        <div class="os-cron-item"><span class="mono accent">07:30</span><span class="cron-label">daily triage</span><span class="cron-desc mono muted">checks every venture's pulse</span></div>
+        <div class="os-cron-item"><span class="mono accent">20:00 Sun</span><span class="cron-label">weekly review</span><span class="cron-desc mono muted">portfolio-level assessment</span></div>
+        <div class="os-cron-item"><span class="mono accent">every 6h</span><span class="cron-label">dashboard refresh</span><span class="cron-desc mono muted">live portfolio data</span></div>
+        <div class="os-cron-item"><span class="mono accent">02:00</span><span class="cron-label">agent dream cycle</span><span class="cron-desc mono muted">each agent's autopilot runs</span></div>
       </div>
     </div>
 
@@ -148,10 +148,10 @@ import Nav from '../components/Nav.astro';
   /* Architecture diagram */
   .os-diagram { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 16px; }
   .os-layer { text-align: center; padding: 12px 24px; border-radius: 4px; min-width: 280px; }
-  .os-layer-top { background: var(--bg-4); border: 1px solid var(--amber-dim); }
+  .os-layer-top { background: var(--bg-4); border: 1px solid var(--accent-dim); }
   .os-layer-fleet { background: var(--bg-4); border: 1px solid var(--border-2); }
   .os-layer-brain { background: rgba(107,159,255,0.07); border: 1px solid rgba(107,159,255,0.25); }
-  .os-layer-portfolio { background: rgba(232,160,69,0.07); border: 1px solid rgba(232,160,69,0.25); }
+  .os-layer-portfolio { background: rgba(95,207,158,0.07); border: 1px solid rgba(95,207,158,0.25); }
   .os-layer-label { font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px; }
   .os-layer-desc { font-size: 11px; display: block; }
   .os-arrow { font-family: var(--mono); color: var(--text-3); font-size: 12px; padding: 2px 0; }
@@ -178,7 +178,7 @@ import Nav from '../components/Nav.astro';
   /* Stats grid */
   .os-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0; }
   .os-stat { text-align: center; padding: 16px; background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 6px; }
-  .os-stat-num { display: block; font-size: 22px; font-weight: 700; color: var(--amber); margin-bottom: 4px; }
+  .os-stat-num { display: block; font-size: 22px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
   .os-stat-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
 
   /* Cron grid */
@@ -194,7 +194,7 @@ import Nav from '../components/Nav.astro';
   .os-v-name { font-size: 15px; font-weight: 600; }
   .os-v-status { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; border: 1px solid; }
   .os-v-status.active { color: #6b9fff; border-color: rgba(107,159,255,0.3); background: rgba(107,159,255,0.07); }
-  .os-v-status.building { color: var(--amber); border-color: rgba(232,160,69,0.3); background: rgba(232,160,69,0.07); }
+  .os-v-status.building { color: #5fcf9e; border-color: rgba(95,207,158,0.3); background: rgba(95,207,158,0.07); }
   .os-v-status.parked { color: var(--text-3); border-color: var(--border-2); background: var(--bg-4); }
   .os-v-desc { font-size: 13px; line-height: 1.5; }
 

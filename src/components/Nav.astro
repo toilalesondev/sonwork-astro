@@ -9,6 +9,8 @@ interface Props {
 
 const { active } = Astro.props;
 
+import Logo from './Logo.astro';
+
 const links: { href: string; label: string; id: Props['active'] }[] = [
   { href: '/series', label: 'Writing', id: 'writing' },
   { href: '/projects', label: 'Projects', id: 'projects' },
@@ -16,10 +18,15 @@ const links: { href: string; label: string; id: Props['active'] }[] = [
 ];
 ---
 <nav class="nav">
-  <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
-  <div class="nav-links">
-    {links.map(link => (
-      <a href={link.href} class:list={['nav-link', { active: link.id === active }]}>{link.label}</a>
-    ))}
+  <div class="nav-inner">
+    <a href="/" class="nav-brand" aria-label="Sơn — home">
+      <Logo size={24} class="nav-brand-mark" />
+      <span class="nav-brand-wordmark">Sơn<span class="nav-dot">.</span></span>
+    </a>
+    <div class="nav-links">
+      {links.map(link => (
+        <a href={link.href} class:list={['nav-link', { active: link.id === active }]}>{link.label}</a>
+      ))}
+    </div>
   </div>
 </nav>

@@ -499,13 +499,15 @@ import Nav from '../components/Nav.astro';
     // Pull palette tokens from global.css :root so canvas colors stay in sync.
     const cssVar = (name: string, fallback: string) =>
       getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
-    const AMBER = cssVar('--amber', '#e8a045');
+    const ACCENT = cssVar('--accent', '#63b1f9');
     const BG = cssVar('--bg', '#0a0a0a');
 
     // Per-agent identity colors (one-offs, NOT in the palette — shared with the
     // arch-box / source-name / legend / matrix classes in the style block).
+    // The primary "shared" hub wears the site accent (blue); the rest stay a
+    // varied multi-hue set, retuned so none collides with the blue accent.
     const colors = {
-      shared: AMBER, robin: '#60a5fa', karpathy: '#34d399',
+      shared: ACCENT, robin: '#22d3ee', karpathy: '#34d399',
       augustus: '#f472b6', aurelius: '#a78bfa', lando: '#fb923c', saman: '#94a3b8'
     };
 
@@ -541,7 +543,7 @@ import Nav from '../components/Nav.astro';
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = hoverId && (e.from===hoverId||e.to===hoverId) ? AMBER : 'rgba(255,255,255,0.1)';
+        ctx.strokeStyle = hoverId && (e.from===hoverId||e.to===hoverId) ? ACCENT : 'rgba(255,255,255,0.1)';
         ctx.lineWidth = e.w;
         ctx.stroke();
       });
@@ -609,20 +611,20 @@ import Nav from '../components/Nav.astro';
   .page-header { margin-bottom: 2.5rem; }
   .header-meta { font-family: var(--mono); color: var(--text-3); font-size: 0.8rem; margin-bottom: 0.5rem; }
   .page-header h1 { font-size: 2.4rem; font-weight: 700; color: var(--text); margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.75rem; }
-  .pulse { display: inline-block; width: 10px; height: 10px; background: var(--amber); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  .pulse { display: inline-block; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
   .subtitle { color: var(--text-2); font-size: 1rem; margin: 0; }
 
   .stats-bar { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; background: var(--bg-2); border: 1px solid var(--border-2); border-radius: 8px; }
   .stat { display: flex; flex-direction: column; gap: 0.15rem; }
-  .stat .num { font-family: var(--mono); font-size: 1.5rem; font-weight: 700; color: var(--amber); }
+  .stat .num { font-family: var(--mono); font-size: 1.5rem; font-weight: 700; color: var(--accent); }
   .stat .lbl { font-size: 0.75rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; }
 
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
   @media(max-width:768px) { .two-col { grid-template-columns: 1fr; } }
 
   .card { background: var(--bg-2); border: 1px solid var(--border-2); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
-  .card h2 { font-size: 1rem; font-weight: 600; color: var(--amber); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 1rem; }
+  .card h2 { font-size: 1rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 1rem; }
   .card p { color: var(--text-2); line-height: 1.6; margin: 0 0 1rem; font-size: 0.9rem; }
   .card-sub { color: var(--text-3); font-size: 0.82rem; margin: -0.5rem 0 1rem; }
   .full-width { grid-column: 1/-1; }
@@ -635,9 +637,9 @@ import Nav from '../components/Nav.astro';
   .arch-box { padding: 0.4rem 0.8rem; border-radius: 6px; font-family: var(--mono); font-size: 0.78rem; font-weight: 600; border: 1px solid; }
   /* Per-agent identity colors (one-offs, NOT in the Command Center palette — these
      match the knowledge-graph node colors below; tinted-black bg pairs each hue). */
-  .arch-box.sir { background: #1a1a0a; border-color: var(--amber); color: var(--amber); }
+  .arch-box.sir { background: #0a1018; border-color: var(--accent); color: var(--accent); }
   .arch-box.db { background: #0a120a; border-color: #34d399; color: #34d399; padding: 0.5rem 1.5rem; }
-  .arch-box.robin { background: #0a0f1a; border-color: #60a5fa; color: #60a5fa; }
+  .arch-box.robin { background: #0a0f1a; border-color: #22d3ee; color: #22d3ee; }
   .arch-box.karpathy { background: #0a1410; border-color: #34d399; color: #34d399; }
   .arch-box.augustus { background: #1a0a12; border-color: #f472b6; color: #f472b6; }
   .arch-box.lando { background: #1a0f0a; border-color: #fb923c; color: #fb923c; }
@@ -646,34 +648,34 @@ import Nav from '../components/Nav.astro';
 
   /* How to read/write steps */
   .how-row { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start; }
-  /* #1a1a0a = amber-tinted near-black chip bg (one-off, deliberate amber wash). */
-  .step-num { min-width: 28px; height: 28px; background: #1a1a0a; border: 1px solid var(--amber); color: var(--amber); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.75rem; font-weight: 700; }
+  /* #0a1018 = accent-tinted near-black chip bg (one-off, deliberate blue wash). */
+  .step-num { min-width: 28px; height: 28px; background: #0a1018; border: 1px solid var(--accent); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.75rem; font-weight: 700; }
   .step-body { color: var(--text-2); font-size: 0.85rem; line-height: 1.6; }
   .step-body strong { color: var(--text); }
-  code { background: var(--bg-4); color: var(--amber); padding: 0.1em 0.4em; border-radius: 3px; font-family: var(--mono); font-size: 0.8em; }
-  code.block { display: block; padding: 0.5rem 0.75rem; margin: 0.4rem 0; border-left: 2px solid var(--amber); background: var(--bg-2); }
+  code { background: var(--bg-4); color: var(--accent); padding: 0.1em 0.4em; border-radius: 3px; font-family: var(--mono); font-size: 0.8em; }
+  code.block { display: block; padding: 0.5rem 0.75rem; margin: 0.4rem 0; border-left: 2px solid var(--accent); background: var(--bg-2); }
 
   /* Source list */
   .source-list { display: flex; flex-direction: column; gap: 0.9rem; }
   .source-row { display: grid; grid-template-columns: 80px 1fr 48px; gap: 0.5rem; align-items: center; }
   .source-name { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; }
   /* Per-agent identity colors (one-offs — shared with arch-box / graph nodes). */
-  .source-name.shared { color: var(--amber); }
-  .source-name.robin { color: #60a5fa; }
+  .source-name.shared { color: var(--accent); }
+  .source-name.robin { color: #22d3ee; }
   .source-name.karpathy { color: #34d399; }
   .source-name.aurelius { color: #a78bfa; }
   .source-name.augustus { color: #f472b6; }
   .source-name.lando { color: #fb923c; }
   .source-name.saman { color: #94a3b8; }
   .source-bar-wrap { background: var(--bg-4); border-radius: 3px; height: 6px; overflow: hidden; }
-  .source-bar { height: 100%; background: var(--amber); border-radius: 3px; }
+  .source-bar { height: 100%; background: var(--accent); border-radius: 3px; }
   .source-count { font-family: var(--mono); font-size: 0.78rem; color: var(--text-2); text-align: right; }
   .source-role { grid-column: 1/-1; font-size: 0.75rem; color: var(--text-3); margin-top: -0.3rem; }
 
   /* Namespace grid */
   .ns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .ns-group { background: var(--bg-2); border: 1px solid var(--border-2); border-radius: 6px; padding: 0.75rem; }
-  .ns-header { font-family: var(--mono); font-size: 0.8rem; color: var(--amber); font-weight: 700; margin-bottom: 0.4rem; }
+  .ns-header { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; }
   .ns-items { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.4rem; }
   .ns-item { font-family: var(--mono); font-size: 0.68rem; color: var(--text-2); background: var(--bg-4); padding: 0.1rem 0.4rem; border-radius: 3px; }
   .ns-count { font-size: 0.7rem; color: var(--text-3); }
@@ -681,7 +683,7 @@ import Nav from '../components/Nav.astro';
   /* Type pills */
   .type-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .type-pill { display: flex; align-items: center; gap: 0.4rem; background: var(--bg-2); border: 1px solid var(--border-2); border-radius: 20px; padding: 0.2rem 0.75rem; font-size: 0.78rem; color: var(--text-2); }
-  .type-pill span { font-family: var(--mono); color: var(--amber); font-size: 0.72rem; }
+  .type-pill span { font-family: var(--mono); color: var(--accent); font-size: 0.72rem; }
 
   /* Graph */
   /* #080808 = intentionally one notch below --bg to recess the canvas well. */
@@ -691,23 +693,23 @@ import Nav from '../components/Nav.astro';
   .legend-dot { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: var(--text-2); }
   .legend-dot::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
   /* Per-agent identity colors (one-offs — shared with arch-box / source nodes). */
-  .legend-dot.shared::before { background: var(--amber); }
-  .legend-dot.robin::before { background: #60a5fa; }
+  .legend-dot.shared::before { background: var(--accent); }
+  .legend-dot.robin::before { background: #22d3ee; }
   .legend-dot.karpathy::before { background: #34d399; }
   .legend-dot.augustus::before { background: #f472b6; }
   .legend-dot.aurelius::before { background: #a78bfa; }
   .legend-dot.lando::before { background: #fb923c; }
   .legend-dot.saman::before { background: #94a3b8; }
-  /* #1a1a0a = amber-tinted near-black (deliberate amber wash, matches step-num). */
-  .graph-tooltip { position: absolute; background: #1a1a0a; border: 1px solid var(--amber); color: var(--amber); padding: 0.3rem 0.6rem; border-radius: 4px; font-family: var(--mono); font-size: 0.75rem; pointer-events: none; display: none; white-space: nowrap; }
+  /* #0a1018 = accent-tinted near-black (deliberate blue wash, matches step-num). */
+  .graph-tooltip { position: absolute; background: #0a1018; border: 1px solid var(--accent); color: var(--accent); padding: 0.3rem 0.6rem; border-radius: 4px; font-family: var(--mono); font-size: 0.75rem; pointer-events: none; display: none; white-space: nowrap; }
 
   /* Matrix */
   .matrix-wrap { overflow-x: auto; }
   .matrix { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
   .matrix th { padding: 0.5rem 0.75rem; text-align: center; font-family: var(--mono); font-size: 0.72rem; font-weight: 700; border-bottom: 1px solid var(--border-2); }
   /* Per-agent identity colors (one-offs — shared across the gbrain visualizations). */
-  .matrix th.shared { color: var(--amber); }
-  .matrix th.robin { color: #60a5fa; }
+  .matrix th.shared { color: var(--accent); }
+  .matrix th.robin { color: #22d3ee; }
   .matrix th.karpathy { color: #34d399; }
   .matrix th.augustus { color: #f472b6; }
   .matrix th.aurelius { color: #a78bfa; }
@@ -715,25 +717,25 @@ import Nav from '../components/Nav.astro';
   .matrix th.saman { color: #94a3b8; }
   .matrix td { padding: 0.4rem 0.75rem; text-align: center; color: var(--text-3); border-bottom: 1px solid var(--border); font-family: var(--mono); }
   .matrix .row-label { text-align: left; font-weight: 700; }
-  .matrix .row-label.shared { color: var(--amber); }
-  .matrix .row-label.robin { color: #60a5fa; }
+  .matrix .row-label.shared { color: var(--accent); }
+  .matrix .row-label.robin { color: #22d3ee; }
   .matrix .row-label.karpathy { color: #34d399; }
   .matrix .row-label.augustus { color: #f472b6; }
   .matrix .row-label.aurelius { color: #a78bfa; }
   .matrix .row-label.lando { color: #fb923c; }
   .matrix .row-label.saman { color: #94a3b8; }
-  .matrix .hot { color: var(--amber); font-weight: 700; font-size: 1rem; }
+  .matrix .hot { color: var(--accent); font-weight: 700; font-size: 1rem; }
   .matrix .warm { color: var(--text-2); }
   .matrix .cool { color: var(--text-3); }
 
   /* Hubs */
   .hubs-list { display: flex; flex-direction: column; gap: 0.75rem; }
   .hub-row { display: grid; grid-template-columns: 36px 1fr 80px 90px; gap: 0.75rem; align-items: center; padding: 0.75rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; }
-  .hub-rank { font-family: var(--mono); font-size: 0.8rem; color: var(--amber); font-weight: 700; }
+  .hub-rank { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); font-weight: 700; }
   .hub-slug { font-family: var(--mono); font-size: 0.72rem; color: var(--text); word-break: break-all; }
   .hub-source { font-family: var(--mono); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 3px; text-align: center; }
   /* Per-agent identity colors (one-offs); tinted-black bg pairs each hue. */
-  .hub-source.shared { color: var(--amber); background: #1a1a0a; }
+  .hub-source.shared { color: var(--accent); background: #0a1018; }
   .hub-source.karpathy { color: #34d399; background: #0a1410; }
   .hub-links { font-family: var(--mono); font-size: 0.72rem; color: var(--text-2); text-align: right; }
   .hub-desc { grid-column: 1/-1; font-size: 0.75rem; color: var(--text-3); margin-top: -0.25rem; }
@@ -742,10 +744,10 @@ import Nav from '../components/Nav.astro';
   .timeline-bar-wrap { margin-top: 0.5rem; }
   .timeline-months { display: flex; gap: 1rem; align-items: flex-end; height: 100px; }
   .tl-col { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; height: 100%; justify-content: flex-end; }
-  .tl-bar { width: 100%; background: var(--amber); border-radius: 3px 3px 0 0; min-height: 4px; transition: opacity 0.2s; }
+  .tl-bar { width: 100%; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 4px; transition: opacity 0.2s; }
   .tl-bar:hover { opacity: 0.7; }
   .tl-label { font-family: var(--mono); font-size: 0.72rem; color: var(--text-3); }
-  .tl-num { font-family: var(--mono); font-size: 0.68rem; color: var(--amber); }
+  .tl-num { font-family: var(--mono); font-size: 0.68rem; color: var(--accent); }
 
   /* Company model */
   .company-model { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
