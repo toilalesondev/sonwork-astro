@@ -23,7 +23,6 @@ export const projects: Project[] = [
     tagline: 'AI evaluation infrastructure',
     description: 'Co-founder. Building the evaluation layer for the AI stack — where models get measured, compared, and certified before they touch production.',
     status: 'active',
-    url: 'https://perfeat.org',
     emoji: '📐',
     highlights: [
       'LLM eval harness for production-grade testing',
