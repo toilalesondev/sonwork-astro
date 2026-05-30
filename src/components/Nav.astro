@@ -16,10 +16,12 @@ const links: { href: string; label: string; id: Props['active'] }[] = [
 ];
 ---
 <nav class="nav">
-  <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
-  <div class="nav-links">
-    {links.map(link => (
-      <a href={link.href} class:list={['nav-link', { active: link.id === active }]}>{link.label}</a>
-    ))}
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">Sơn<span class="nav-dot">.</span></a>
+    <div class="nav-links">
+      {links.map(link => (
+        <a href={link.href} class:list={['nav-link', { active: link.id === active }]}>{link.label}</a>
+      ))}
+    </div>
   </div>
 </nav>

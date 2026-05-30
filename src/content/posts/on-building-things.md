@@ -15,6 +15,6 @@ This is a **sample post** in the `experiences` series. Use it as a template.
 
 ## How to use this
 
-Duplicate this file, update the frontmatter (keep `series: "experiences"`), and write the account in Markdown. Blockquotes render with an amber left bar; `## headings` style automatically.
+Duplicate this file, update the frontmatter (keep `series: "experiences"`), and write the account in Markdown. Blockquotes render with a blue accent left bar; `## headings` style automatically.
 
 Delete this sample once you have real entries.
