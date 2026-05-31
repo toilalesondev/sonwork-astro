@@ -14,12 +14,13 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft))
     <p class="page-sub">Notes on building, on people, and on the years as they happen.</p>
 
     {allPosts.length === 0 ? (
-      <div class="writing-empty writing-empty--page">
-        <p class="writing-empty-lead">Nothing published yet.</p>
-        <p class="writing-empty-sub">
-          I'm writing as I build. The first pieces go up here soon. If you want to
-          know when, I'm easiest to reach on <a href="https://x.com/sonlndv" target="_blank" rel="noopener" class="accent-link">X ↗</a>.
+      <div class="journal-empty journal-empty--page">
+        <p class="journal-empty-lead">The first page is still blank.</p>
+        <p class="journal-empty-sub">
+          I'm writing as I build. The opening pieces go up here soon.
+          <a href="https://x.com/sonlndv" target="_blank" rel="noopener" class="accent-link">I'll mention it on X ↗</a> when the ink's dry.
         </p>
+        <div class="journal-rules" aria-hidden="true"></div>
       </div>
     ) : (
       <div class="writing-list">
@@ -27,7 +28,7 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft))
           <a href={`/posts/${post.id}`} class="writing-row">
             <span class="writing-row-title">{post.data.title}</span>
             {post.data.description && <span class="writing-row-desc text-2">{post.data.description}</span>}
-            <span class="writing-row-date mono text-3">
+            <span class="writing-row-date text-3">
               {post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
             </span>
           </a>

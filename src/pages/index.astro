@@ -38,7 +38,7 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
         <a href="/writing" class="btn-primary">Read the writing</a>
         <a href="/projects" class="btn-ghost">See projects</a>
       </div>
-      <div class="hero-meta mono text-3">
+      <div class="hero-meta text-3">
         {allPosts.length === 0
           ? <span>Saigon · building &amp; writing</span>
           : <><span class="accent">{allPosts.length}</span> {allPosts.length === 1 ? 'post' : 'posts'} · <span class="accent">{totalReadTime}</span> min of reading</>}
@@ -59,7 +59,7 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
               <div class="fp-card-body">
                 <div class="fp-card-top">
                   <span class="fp-card-emoji">{p.emoji}</span>
-                  <span class:list={['mono', 'fp-card-badge', `fp-badge-${p.status}`]}>{p.status}</span>
+                  <span class:list={['fp-card-badge', `fp-badge-${p.status}`]}>{p.status}</span>
                 </div>
                 <div class="fp-card-name">{p.name}</div>
                 <div class="fp-card-tag">{p.tagline}</div>
@@ -78,20 +78,21 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
       </div>
 
       {allPosts.length === 0 ? (
-        <div class="writing-empty">
-          <p class="writing-empty-lead">Nothing published yet.</p>
-          <p class="writing-empty-sub">
-            I'm writing as I build. The first pieces go up here soon. Notes on
+        <div class="journal-empty">
+          <p class="journal-empty-lead">The first page is still blank.</p>
+          <p class="journal-empty-sub">
+            I'm writing as I build. The opening pieces go up here soon: notes on
             shipping in Saigon, on what a year of building actually teaches you,
             on the people I keep learning from.
           </p>
+          <div class="journal-rules" aria-hidden="true"></div>
         </div>
       ) : (
         <div class="post-feed">
           {allPosts.map(post => (
             <a href={`/posts/${post.id}`} class="post-row">
               <span class="post-title">{post.data.title}</span>
-              <span class="post-date mono text-3">
+              <span class="post-date text-3">
                 {post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
               </span>
             </a>
