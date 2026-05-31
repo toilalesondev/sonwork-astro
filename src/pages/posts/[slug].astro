@@ -2,8 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import { getCollection, render } from 'astro:content';
-import { seriesMeta } from '../../data/series';
-
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({data}) => !data.draft);
   return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
@@ -11,19 +9,14 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-
-const s = seriesMeta[post.data.series];
 ---
 <Base title={`${post.data.title} — Sơn Lê`} description={post.data.description}>
   <Nav active="writing" />
 
   <article class="post-article">
-    <a href="/" class="back-link mono text-3">← back</a>
+    <a href="/writing" class="back-link">← back to writing</a>
 
     <div class="post-article-meta">
-      <span class={`post-marker mono ${s.badgeClass}`}>{s.marker}</span>
-      <span class="mono text-3">{s.name}</span>
-      <span class="mono text-3">·</span>
       <span class="mono text-3">
         {post.data.pubDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}
       </span>
@@ -45,7 +38,7 @@ const s = seriesMeta[post.data.series];
     </div>
 
     <div class="post-footer">
-      <a href="/" class="btn-ghost mono">← back to writing</a>
+      <a href="/writing" class="btn-ghost">← back to writing</a>
     </div>
   </article>
 </Base>

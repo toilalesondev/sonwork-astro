@@ -1,10 +1,8 @@
 ---
-// `active` accepts more ids than the nav renders. The home/index page passes
-// 'dashboard' and the /os-v1 + /gbrain routes pass their own id so they can be
-// linked from elsewhere without lighting up a nav item — none of those three are
-// listed in the nav itself (the brand logo links home). Nav = Writing · Projects · About.
+// `active` accepts 'dashboard' (home, brand logo links there) plus the three
+// nav ids. Nav = Writing · Projects · About.
 interface Props {
-  active: 'dashboard' | 'writing' | 'projects' | 'about' | 'gbrain';
+  active: 'dashboard' | 'writing' | 'projects' | 'about';
 }
 
 const { active } = Astro.props;
@@ -12,7 +10,7 @@ const { active } = Astro.props;
 import Logo from './Logo.astro';
 
 const links: { href: string; label: string; id: Props['active'] }[] = [
-  { href: '/series', label: 'Writing', id: 'writing' },
+  { href: '/writing', label: 'Writing', id: 'writing' },
   { href: '/projects', label: 'Projects', id: 'projects' },
   { href: '/about', label: 'About', id: 'about' },
 ];

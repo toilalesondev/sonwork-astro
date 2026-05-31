@@ -3,14 +3,12 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import { getCollection } from 'astro:content';
 import { projects } from '../data/projects';
-import { seriesMeta } from '../data/series';
 
 const allPosts = (await getCollection('posts', ({data}) => !data.draft))
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const activeProjects = projects.filter(p => p.status === 'active' || p.status === 'building');
 
-const seriesMap = seriesMeta;
 const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime), 0);
 ---
 <Base>
@@ -20,31 +18,30 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
 
     <!-- WHO -->
     <section class="hero">
-      <div class="hero-prompt mono"><span class="hero-prompt-caret accent">&#62;</span> <span class="text-3">./introduction</span></div>
       <h1 class="hero-name">Sơn Lê</h1>
-      <p class="hero-hook">
-        Still learning. Writing it down as I go.<span class="cursor">▊</span>
-      </p>
+      <p class="hero-hook">Still learning. Writing it down as I go.</p>
       <div class="hero-roles">
         <span class="role-item">VC</span>
-        <span class="role-sep mono">→</span>
+        <span class="role-sep">→</span>
         <span class="role-item">Operator</span>
-        <span class="role-sep mono">→</span>
+        <span class="role-sep">→</span>
         <span class="role-item active">Builder</span>
-        <span class="hero-company mono text-3">
-          · Founder, <a href="https://perfeat.org" target="_blank" rel="noopener" class="accent-link">Perfeat.org ↗</a>
+        <span class="hero-company">
+          Founder of <a href="https://perfeat.org" target="_blank" rel="noopener" class="accent-link">Perfeat ↗</a>
         </span>
       </div>
       <p class="hero-bio">
-        Spent time on the VC side, then the operator side. Now building in Saigon —
+        Spent years on the VC side, then the operator side. Now building in Saigon,
         and writing about what I'm figuring out along the way.
       </p>
       <div class="hero-ctas">
-        <a href="/series" class="btn-primary">Read the writing</a>
+        <a href="/writing" class="btn-primary">Read the writing</a>
         <a href="/projects" class="btn-ghost">See projects</a>
       </div>
       <div class="hero-meta mono text-3">
-        <span class="accent">{allPosts.length}</span> posts · <span class="accent">3</span> series · <span class="accent">{totalReadTime}</span> min of reading
+        {allPosts.length === 0
+          ? <span>Saigon · building &amp; writing</span>
+          : <><span class="accent">{allPosts.length}</span> {allPosts.length === 1 ? 'post' : 'posts'} · <span class="accent">{totalReadTime}</span> min of reading</>}
       </div>
     </section>
 
@@ -52,8 +49,8 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
     {activeProjects.length > 0 && (
       <section class="home-section">
         <div class="section-hd">
-          <h2 class="section-title mono">Building</h2>
-          <a href="/projects" class="section-all mono">all projects →</a>
+          <h2 class="section-title">Building</h2>
+          <a href="/projects" class="section-all">all projects →</a>
         </div>
         <div class="fp-cards">
           {activeProjects.map(p => (
@@ -76,50 +73,32 @@ const totalReadTime = allPosts.reduce((acc, p) => acc + parseInt(p.data.readTime
     <!-- WRITING -->
     <section class="home-section">
       <div class="section-hd">
-        <h2 class="section-title mono">Writing</h2>
-        <a href="/series" class="section-all mono">by series →</a>
+        <h2 class="section-title">Writing</h2>
+        {allPosts.length > 0 && <a href="/writing" class="section-all">all →</a>}
       </div>
 
-      <div class="tab-strip" id="tabs">
-        <button class="tab active" data-series="all">All</button>
-        {Object.entries(seriesMap).map(([key, s]) => (
-          <button class="tab" data-series={key}>
-            <span class="mono">{s.marker}</span> {s.name}
-          </button>
-        ))}
-      </div>
-
-      <div class="post-feed" id="postFeed">
-        {allPosts.map(post => {
-          const s = seriesMap[post.data.series];
-          return (
-            <a href={`/posts/${post.id}`}
-               class="post-row"
-               data-series={post.data.series}>
-              <span class={`post-marker mono ${s.badgeClass}`}>{s.marker}</span>
+      {allPosts.length === 0 ? (
+        <div class="writing-empty">
+          <p class="writing-empty-lead">Nothing published yet.</p>
+          <p class="writing-empty-sub">
+            I'm writing as I build. The first pieces go up here soon. Notes on
+            shipping in Saigon, on what a year of building actually teaches you,
+            on the people I keep learning from.
+          </p>
+        </div>
+      ) : (
+        <div class="post-feed">
+          {allPosts.map(post => (
+            <a href={`/posts/${post.id}`} class="post-row">
               <span class="post-title">{post.data.title}</span>
               <span class="post-date mono text-3">
                 {post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
               </span>
             </a>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
 
   </main>
-
-  <script>
-    // Series tab filtering — the single, meaningful filter axis for the feed.
-    document.querySelectorAll<HTMLElement>('.tab').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const series = btn.dataset.series;
-        document.querySelectorAll<HTMLElement>('.post-row').forEach(row => {
-          row.style.display = (series === 'all' || row.dataset.series === series) ? 'flex' : 'none';
-        });
-      });
-    });
-  </script>
 </Base>

@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('posts', ({data}) => !data.draft))
+  .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<Base title="Writing — Sơn Lê">
+  <Nav active="writing" />
+
+  <div class="page-wrap">
+    <h1 class="page-title">Writing</h1>
+    <p class="page-sub">Notes on building, on people, and on the years as they happen.</p>
+
+    {allPosts.length === 0 ? (
+      <div class="writing-empty writing-empty--page">
+        <p class="writing-empty-lead">Nothing published yet.</p>
+        <p class="writing-empty-sub">
+          I'm writing as I build. The first pieces go up here soon. If you want to
+          know when, I'm easiest to reach on <a href="https://x.com/toilaleson" target="_blank" rel="noopener" class="accent-link">X ↗</a>.
+        </p>
+      </div>
+    ) : (
+      <div class="writing-list">
+        {allPosts.map(post => (
+          <a href={`/posts/${post.id}`} class="writing-row">
+            <span class="writing-row-title">{post.data.title}</span>
+            {post.data.description && <span class="writing-row-desc text-2">{post.data.description}</span>}
+            <span class="writing-row-date mono text-3">
+              {post.data.pubDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+            </span>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Base>
