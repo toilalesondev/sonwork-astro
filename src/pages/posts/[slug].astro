@@ -17,18 +17,18 @@ const { Content } = await render(post);
     <a href="/writing" class="back-link">← back to writing</a>
 
     <div class="post-article-meta">
-      <span class="mono text-3">
+      <span class="text-3">
         {post.data.pubDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}
       </span>
-      <span class="mono text-3">·</span>
-      <span class="mono text-3">{post.data.readTime} read</span>
+      <span class="text-3">·</span>
+      <span class="text-3">{post.data.readTime} read</span>
     </div>
 
     <h1 class="post-article-title">{post.data.title}</h1>
     {post.data.description && <p class="post-article-sub">{post.data.description}</p>}
 
     <div class="post-article-tags">
-      {post.data.tags.map(tag => <span class="tag-chip mono">[{tag}]</span>)}
+      {post.data.tags.map(tag => <span class="tag-chip">{tag}</span>)}
     </div>
 
     <div class="post-divider"></div>
