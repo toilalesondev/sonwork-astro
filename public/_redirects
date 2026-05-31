@@ -1,0 +1,5 @@
+# Orphaned routes from prior deploys — redirect or 404
+/contact  /about  301
+/gbrain   /404  404
+/os-v1    /404  404
+/series*  /writing  301
