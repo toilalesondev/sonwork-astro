@@ -21,13 +21,13 @@ export const projects: Project[] = [
     slug: 'perfeat',
     name: 'Perfeat',
     tagline: 'Personal food diary',
-    description: 'Founder. A private, editorial food diary — rate every meal 1–7, log dish, restaurant, companions, price, and a photo. Turns your eating history into a searchable personal taste library.',
+    description: 'A private food diary where every meal gets a rating from 1 to 7 and its own page: the dish, the place, who you were with, the price, and a photo. Your eating history becomes a searchable taste library.',
     status: 'active',
     emoji: '🍜',
     highlights: [
       'Rate meals 1–7 and log dish, place, price, photo',
-      'Top-moments montage — your best meals as shareable cards',
-      'TestFlight v1.0 — in App Store review',
+      'Top-moments montage: your best meals as shareable cards',
+      'TestFlight v1.0, in App Store review',
     ],
   },
 ];

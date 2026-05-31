@@ -8,41 +8,32 @@ import { projects } from '../data/projects';
   <Nav active="projects" />
 
   <div class="page-wrap">
-    <div class="page-prompt mono text-3">./projects</div>
-    <h1 class="page-title">What I'm building</h1>
-    <p class="page-sub">Ventures, products, and experiments. Status reflects current attention.</p>
+    <h1 class="page-title">Projects</h1>
+    <p class="page-sub">What I'm building, and where each one stands right now.</p>
 
     <div class="projects-list">
-      {projects.map(p => {
-        const inner = (
-          <>
-            <div class="project-hd">
-              <span class="project-emoji">{p.emoji}</span>
-              <div class="project-info">
-                <div class="project-name">{p.name}</div>
-                <div class="project-tagline mono text-3">{p.tagline}</div>
-              </div>
-              <span class:list={['project-status', `status-${p.status}`, 'mono']}>{p.status}</span>
-              {p.url && <span class="mono text-3 project-arrow">↗</span>}
+      {projects.map(p => (
+        <div class="project-card no-link">
+          <div class="project-hd">
+            <span class="project-emoji">{p.emoji}</span>
+            <div class="project-info">
+              <div class="project-name">{p.name}</div>
+              <div class="project-tagline text-3">{p.tagline}</div>
             </div>
-            <p class="project-desc">{p.description}</p>
-            <div class="project-highlights">
-              {p.highlights.map(h => (
-                <span class="project-highlight mono">▹ {h}</span>
-              ))}
-            </div>
-          </>
-        );
-        return p.url
-          ? <a href={p.url} class="project-card">{inner}</a>
-          : <div class="project-card no-link">{inner}</div>;
-      })}
+            <span class:list={['project-status', `status-${p.status}`, 'mono']}>{p.status}</span>
+          </div>
+          <p class="project-desc">{p.description}</p>
+          <div class="project-highlights">
+            {p.highlights.map(h => (
+              <span class="project-highlight">{h}</span>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
 
-    <div class="projects-legend mono text-3">
-      <span class="legend-dot active-dot"></span> active · actively shipping
-      <span class="legend-dot building-dot"></span> building · in development
-      <span class="legend-dot parked-dot"></span> parked · paused, will revisit
+    <div class="projects-legend text-3">
+      <span class="legend-dot active-dot"></span> active <span class="legend-dot building-dot"></span> building <span class="legend-dot parked-dot"></span> parked
     </div>
   </div>
 </Base>

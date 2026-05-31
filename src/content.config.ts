@@ -7,7 +7,7 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     pubDate: z.date(),
-    series: z.enum(['life-book', 'experiences', 'human']),
+    series: z.string().optional(),
     tags: z.array(z.string()).default([]),
     readTime: z.string().default('3 min'),
     draft: z.boolean().default(false),
