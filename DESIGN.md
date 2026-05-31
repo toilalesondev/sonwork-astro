@@ -23,26 +23,26 @@ colors:
   white: "#FFFFFF"
 typography:
   h1:
-    fontFamily: Inter
-    fontSize: 56px
-    fontWeight: 700
-    lineHeight: 1.0
-    letterSpacing: "-0.04em"
+    fontFamily: Spectral
+    fontSize: clamp(2.75rem,6vw,4.25rem)
+    fontWeight: 800
+    lineHeight: 1.02
+    letterSpacing: "-0.02em"
   h2:
-    fontFamily: Inter
-    fontSize: 28px
-    fontWeight: 650
-    lineHeight: 1.15
-    letterSpacing: "-0.03em"
+    fontFamily: Spectral
+    fontSize: clamp(2rem,4.5vw,2.5rem)
+    fontWeight: 700
+    lineHeight: 1.05
+    letterSpacing: "-0.02em"
   body:
-    fontFamily: Inter
-    fontSize: 15px
+    fontFamily: Spectral
+    fontSize: 1.125rem
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.7
     letterSpacing: "0em"
   body-sm:
-    fontFamily: Inter
-    fontSize: 14px
+    fontFamily: Spectral
+    fontSize: 1rem
     fontWeight: 400
     lineHeight: 1.7
     letterSpacing: "0em"
