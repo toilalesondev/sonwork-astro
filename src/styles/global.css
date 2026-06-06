@@ -22,6 +22,8 @@
     --accent-bg2:  rgba(158,58,22,0.12);
     --black:      #1B1A17;
     --white:      #FAF6EF;
+    /* ── NAV GLASS ── */
+    --nav-bg:     rgba(250,246,239,0.88);
     /* ── FONTS (Spectral only; JetBrains Mono retired 2026-05) ── */
     --serif:      'Spectral', 'Be Vietnam Pro', Georgia, 'Times New Roman', serif;
     --sans:       'Spectral', 'Be Vietnam Pro', Georgia, serif;
@@ -31,6 +33,33 @@
     --container:  760px;
     --gutter:     32px;
     --gutter-sm:  20px;
+  }
+
+  /* ── DARK THEME — warm parchment-on-coal aesthetic ── */
+  [data-theme="dark"] {
+    color-scheme: dark;
+    /* Paper → Coal palette */
+    --bg:         #1A1714;
+    --bg-2:       #221F1B;
+    --bg-3:       #2C2924;
+    --bg-4:       #343028;
+    --bg-5:       #3D382F;
+    --border:     #3A342A;
+    --border-2:   #4A4238;
+    /* Text — warm off-whites */
+    --text:       #F0EBE1;
+    --text-2:     #BDB5A8;
+    --text-3:     #857C72;
+    /* Accent — lightened sienna for dark-bg readability */
+    --accent:      #C4643A;
+    --accent-dim:  #A84D26;
+    --accent-hover:#D4754A;
+    --accent-bg:   rgba(196,100,58,0.10);
+    --accent-bg2:  rgba(196,100,58,0.18);
+    --black:      #F0EBE1;
+    --white:      #1A1714;
+    /* Nav glass — warm dark translucent */
+    --nav-bg:     rgba(26,23,20,0.88);
   }
 
   html { scroll-behavior: smooth; }
@@ -60,7 +89,7 @@ a { text-decoration: none; color: inherit; }
 .tag-chip { font-weight:500;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3); }
 
 /* ── NAV ── */
-.nav { position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:0 var(--gutter);height:48px;background:rgba(250,246,239,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border); }
+.nav { position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:0 var(--gutter);height:48px;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border); }
 .nav-inner { width:100%;max-width:var(--container);margin:0 auto;display:flex;align-items:center;justify-content:space-between; }
 .nav-brand { display:flex;align-items:center;gap:0;font-size:21px;font-weight:700;letter-spacing:-0.01em;line-height:1;font-family:var(--serif); }
 .nav-brand-wordmark { color:var(--text);transition:color .15s; }
@@ -202,11 +231,20 @@ a { text-decoration: none; color: inherit; }
 .about-social { font-size:.8125rem;color:var(--accent);transition:opacity .15s;font-weight:500; }
 .about-social:hover { opacity:.75; }
 
+/* ── DARK THEME — green badge overrides for contrast on dark bg ── */
+  [data-theme="dark"] .fp-badge-building,
+  [data-theme="dark"] .status-building {
+    color: #3D9A62;
+    border-color: rgba(61,154,98,.30);
+    background: rgba(61,154,98,.09);
+  }
+  [data-theme="dark"] .building-dot { background: #3D9A62; }
+
 /* SCROLLBAR */
 ::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:var(--bg); }
 ::-webkit-scrollbar-thumb { background:var(--border-2);border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:#C9BBA3; }
+::-webkit-scrollbar-thumb:hover { background:var(--bg-5); }
 
 /* RESPONSIVE */
 @media(max-width:640px){
