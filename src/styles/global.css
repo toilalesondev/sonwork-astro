@@ -242,6 +242,9 @@ a { text-decoration: none; color: inherit; }
   }
   [data-theme="dark"] .building-dot { background: #3D9A62; }
 
+/* ── DARK THEME — tag weight bump (Spectral 11px uppercase thins on dark bg) ── */
+  [data-theme="dark"] .tag-chip { font-weight: 600; }
+
 /* SCROLLBAR */
 ::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:var(--bg); }
