@@ -29,7 +29,7 @@
     --sans:       'Spectral', 'Be Vietnam Pro', Georgia, serif;
     --mono:       'Spectral', 'Be Vietnam Pro', Georgia, serif;
     --radius:     4px;
-    --nav-h:      52px;
+    --nav-h:      48px; /* matches .nav { height: 48px } */
     --container:  760px;
     --gutter:     32px;
     --gutter-sm:  20px;
@@ -49,13 +49,15 @@
     /* Text — warm off-whites */
     --text:       #F0EBE1;
     --text-2:     #BDB5A8;
-    --text-3:     #857C72;
+    /* #907E72 = 4.60:1 on #1A1714 (corrected from #857C72 which was 4.35:1, fails AA) */
+    --text-3:     #907E72;
     /* Accent — lightened sienna for dark-bg readability */
-    --accent:      #C4643A;
+    /* #C8683E = 4.68:1 on #1A1714 (corrected from #C4643A which was 4.45:1, fails AA) */
+    --accent:      #C8683E;
     --accent-dim:  #A84D26;
     --accent-hover:#D4754A;
-    --accent-bg:   rgba(196,100,58,0.10);
-    --accent-bg2:  rgba(196,100,58,0.18);
+    --accent-bg:   rgba(200,104,62,0.10);
+    --accent-bg2:  rgba(200,104,62,0.18);
     --black:      #F0EBE1;
     --white:      #1A1714;
     /* Nav glass — warm dark translucent */
