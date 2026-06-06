@@ -1,48 +1,30 @@
 # CLAUDE.md — Sonwork (sonwork.org)
 
-Personal blog. Astro static site. Dark personal operating-system aesthetic.
+Personal blog. Astro static site. "Ink on Paper" design system (see DESIGN.md).
 
-See AGENTS.md for full project context.
+## Stack
 
-## Subagents
+Astro · Static · Cloudflare/Vercel · TypeScript
 
-Six subagents. Invoke with `@name` or describe what you need.
+## GBrain Search Guidance (configured by /sync-gbrain)
+<!-- gstack-gbrain-search-guidance:start -->
 
-**Memory protocol:** Andy + Tan are always involved. Every other agent (@matt, @gstack, @evera, @ive) runs `brv query` + `gbrain query` at start of code tasks, `brv curate` at end of meaningful work. Skip for chat-only turns, typo fixes, and content writing.
+GBrain is set up and synced on this machine. Prefer gbrain over Grep for semantic questions.
 
-## Ownership
+This worktree is pinned to source `code-bb790f` via `.gbrain-source`.
 
-| Layer | Owner |
-|---|---|
-| Design system (canonical: `DESIGN.md`) | `@ive` — read first, never overwrite |
-| New layouts, sections, pages (full HMR live mode) | `@ive craft` |
-| Visual direction for new posts/series | `@ive shape` |
-| Audit a11y/perf/responsive | `@ive audit` |
-| Polish/animate/colorize | `@ive polish`, `@ive animate`, `@ive colorize` |
-| Astro component refactors | `@matt improve-codebase-architecture` |
-| Plan-stage design review | `@gstack plan-design-review` |
-| Live site visual QA on sonwork.org | `@gstack design-review` |
-| Shipping (Cloudflare/Vercel) | `@gstack ship` → `@gstack land-and-deploy` |
-| Performance | `@gstack benchmark` |
-| Post-deploy monitoring | `@gstack canary` |
-| Content writing (essays, posts) | Default Build agent |
-| Brain/memory | `@andy` (project) + `@tan` (cross-repo) |
+Prefer gbrain when:
+- "Where is X handled?" → `gbrain search "keyword1 keyword2"`
+- "Where is symbol Y defined?" → `gbrain code-def <symbol>`
+- "What did we decide about design?" → `gbrain search "<terms>" --source gbrain-shared`
 
-**Hard rules**:
-- Brand register applies — read `.claude/skills/impeccable/reference/brand.md` first
-- DESIGN.md is canonical, never overwrite without approval
-- Current Inter font is a reflex-reject — consider distinctive replacement if redesigning
-- Body text contrast ≥4.5:1 on `#0A0A0A` bg → use `#E8E8E8` or `#A0A0A0`, never `#666666` for body
-- OKLCH for new colors
+Grep is still right for exact strings, regex, and file globs.
 
-## MCP Servers
+<!-- gstack-gbrain-search-guidance:end -->
 
-gbrain + byterover MCP configured globally in `~/.claude/settings.json`. Available in any session.
+## Project notes
 
-## Linked Projects
-
-- `~/workspace/perfeat-mobile/` — Perfeat RN app
-- `~/workspace/perfeat-landing/` — perfeat.org marketing
-- `~/workspace/sonwork-astro/` — THIS repo
-
-Cross-search all three brains with `brv swarm query`.
+- DESIGN.md is canonical — always read it before touching any visual/color/typography.
+- "Ink on Paper" v1.2: warm cream (#FAF6EF), ink (#1B1A17), sienna accent (#9E3A16), Spectral serif.
+- Dark mode is now supported (v1.2) — see DESIGN.md for the coal palette.
+- Brain source: `code-bb790f` (this repo's code index, federated).
